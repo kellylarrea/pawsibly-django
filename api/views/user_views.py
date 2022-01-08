@@ -1,3 +1,4 @@
+from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
@@ -7,6 +8,20 @@ from django.contrib.auth import get_user, authenticate, login, logout
 
 from ..serializers import UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer
 from ..models.user import User
+
+class User(generics.ListAPIView):
+    authentication_classes = ()
+    permission_classes = ()
+    def get(self, request):
+        """Index request"""
+        # Get all the pets:
+        # pets = Pet.objects.all()
+        # Filter the pets by owner, so you can only see your owned pets
+        user = User.objects.all()
+        # Run the data through the serializer
+        data = UserSerializer(user, many=True).data
+        return Response({ 'user': data })
+    
 
 class SignUp(generics.CreateAPIView):
     # Override the authentication/permissions classes so this endpoint
