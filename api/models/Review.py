@@ -25,4 +25,5 @@ class Review(models.Model):
     return {
         'review': self.review,
         'rating': self.rating,
+        'created_at': self.created_at
     }

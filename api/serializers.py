@@ -7,6 +7,7 @@ from .models.mango import Mango
 from .models.user import User
 from .models.pet import Pet
 from .models.booking import Booking
+from .models.review import Review
 
 
 class MangoSerializer(serializers.ModelSerializer):
@@ -73,6 +74,17 @@ class BookingReadSerializer(serializers.ModelSerializer):
      class Meta:
         model = Booking
         fields = '__all__'
+
+
+class ReviewSerializers(serializers.ModelSerializer):
+    sitter = serializers.StringRelatedField()
+    pet_owner = serializers.StringRelatedField()
+    class Meta:
+        model = Review
+
+class ReviewSerializers(serializers.ModelSerializer):
+     class Meta:
+        model = Review
 
 
 
