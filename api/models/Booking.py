@@ -18,10 +18,10 @@ class Booking(models.Model):
   )
 
   def __str__(self):
-    return self.start_date
+    return f'{self.start_date}'
 
   def as_dict(self):
     return {
-        'start_date': self.start_data,
-        'end_data': self.end_data,
+        'start_date': self.start_date,
+        'end_data': self.end_date,
       }
