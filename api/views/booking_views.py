@@ -4,7 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
-from ..models.booking import booking
+from ..models.booking import Booking
 from ..serializers import BookingSerializer
 
 # Create your views here.
