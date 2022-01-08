@@ -15,7 +15,7 @@ class Mangos(generics.ListCreateAPIView):
         """Index request"""
         # Get all the mangos:
         # mangos = Mango.objects.all()
-        # Filter the mangos by owner, so you can only see your owned mangos
+        # Filter the mango s by owner, so you can only see your owned mangos
         mangos = Mango.objects.filter(owner=request.user.id)
         # Run the data through the serializer
         data = MangoSerializer(mangos, many=True).data

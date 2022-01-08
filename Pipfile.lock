@@ -1,7 +1,9 @@
 {
     "_meta": {
         "hash": {
+
             "sha256": "3c68c45aef781760870a3fdcfab96de09a0b066f6f1db2ea2feaf7ac0d96d79a"
+
         },
         "pipfile-spec": 6,
         "requires": {
@@ -15,7 +17,7 @@
             }
         ]
     },
-    "default": {
+   
         "asgiref": {
             "hashes": [
                 "sha256:5ee950735509d04eb673bd7f7120f8fa1c9e2df495394992c73234d526907e17",
@@ -151,6 +153,7 @@
             ],
             "index": "pypi",
             "version": "==0.4.1"
+
         }
     },
     "develop": {}
