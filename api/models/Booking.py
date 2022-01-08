@@ -10,7 +10,7 @@ class Booking(models.Model):
   end_date = models.DateTimeField()
   pet = models.ForeignKey(
       Pet,
-      on_delete=models.CASCADE
+      on_delete=models.CASCADE,
   )
   sitter = models.ForeignKey(
       get_user_model(),
