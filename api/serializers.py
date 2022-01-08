@@ -3,6 +3,8 @@ from rest_framework import serializers
 
 from .models.mango import Mango
 from .models.user import User
+from .models.pet import Pet
+
 
 class MangoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,3 +47,16 @@ class ChangePasswordSerializer(serializers.Serializer):
     model = get_user_model()
     old = serializers.CharField(required=True)
     new = serializers.CharField(required=True)
+
+class PetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
+        fields = '__all__'
+
+class PetReadSerializer(serializers.ModelSerializer):
+    pet_owner = serializers.StringRelatedField()
+    class Meta:
+        model = Pet
+        fields = '__all__'
+
+class Boo
