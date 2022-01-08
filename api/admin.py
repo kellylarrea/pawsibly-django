@@ -3,6 +3,9 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models.user import User
 from .models.mango import Mango
+from .models.pet import Pet
+from .models.review import Review
+from .models.booking import Booking
 
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
@@ -40,3 +43,6 @@ class UserAdmin(BaseUserAdmin):
 # class to format the pages:
 admin.site.register(User, UserAdmin)
 admin.site.register(Mango)
+admin.site.register(Pet)
+admin.site.register(Review)
+admin.site.register(Booking)

@@ -1,14 +1,13 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Review(models.Model):
   # define fields
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
   review = models.CharField(max_length=500)
-  rating = models.IntegerField(null=True)
+  rating = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(5)])
   created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
   sitter = models.ForeignKey(
       get_user_model(),
       on_delete=models.CASCADE
