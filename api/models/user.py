@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.conf import settings
+from django.db.models.fields import BooleanField
 from rest_framework.authtoken.models import Token
 
 class UserManager(BaseUserManager):
@@ -59,9 +60,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     # As with any Django models, we need to define the fields
     # for the model with the type and options:
     email = models.EmailField(max_length=255, unique=True)
-    # name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True)
+    location = models.IntegerField(null=True)
+    sitter = models.BooleanField(null=True)
+    supersitter = models.BooleanField(null=True)
+    pricing = models.IntegerField(null=True)
+    numReviews = models.IntegerField(null=True, blank=True, default=0) 
+    rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    
+
 
     # Any time we call User.objects (such as in objects.all() or objects.filter())
     # make sure to use the custom user manager we created.
@@ -80,6 +89,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of the user"""
         return self.email
+
+                
 
     def get_auth_token(self):
         Token.objects.filter(user=self).delete()

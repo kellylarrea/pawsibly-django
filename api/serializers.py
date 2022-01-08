@@ -1,8 +1,14 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from api.models.booking import Booking
+
 from .models.mango import Mango
 from .models.user import User
+from .models.pet import Pet
+from .models.booking import Booking
+from .models.review import Review
+
 
 class MangoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,3 +51,41 @@ class ChangePasswordSerializer(serializers.Serializer):
     model = get_user_model()
     old = serializers.CharField(required=True)
     new = serializers.CharField(required=True)
+
+class PetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
+        fields = '__all__'
+
+class PetReadSerializer(serializers.ModelSerializer):
+    pets_owned = serializers.StringRelatedField()
+    class Meta:
+        model = Pet
+        fields = '__all__'
+
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+class BookingReadSerializer(serializers.ModelSerializer):
+    pet = serializers.StringRelatedField()
+    sitter = serializers.StringRelatedField()
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+
+class ReviewSerializers(serializers.ModelSerializer):
+    client_reviews = UserSerializer()
+    class Meta:
+        model = Review
+
+class ReviewReadSerializers(serializers.ModelSerializer):
+     class Meta:
+        model = Review
+        fields = '__all__'
+
+
+
+
