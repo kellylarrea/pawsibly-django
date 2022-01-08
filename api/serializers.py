@@ -58,33 +58,33 @@ class PetSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PetReadSerializer(serializers.ModelSerializer):
-    pet_owner = serializers.StringRelatedField()
+    pets_owned = serializers.StringRelatedField()
     class Meta:
         model = Pet
         fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+class BookingReadSerializer(serializers.ModelSerializer):
     pet = serializers.StringRelatedField()
     sitter = serializers.StringRelatedField()
     class Meta:
         model = Booking
         fields = '__all__'
 
-class BookingReadSerializer(serializers.ModelSerializer):
-     class Meta:
-        model = Booking
-        fields = '__all__'
-
 
 class ReviewSerializers(serializers.ModelSerializer):
-    sitter = serializers.StringRelatedField()
-    pet_owner = serializers.StringRelatedField()
+    client_reviews = UserSerializer()
     class Meta:
         model = Review
 
-class ReviewSerializers(serializers.ModelSerializer):
+class ReviewReadSerializers(serializers.ModelSerializer):
      class Meta:
         model = Review
+        fields = '__all__'
 
 
 
