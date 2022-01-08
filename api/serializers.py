@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from api.models.booking import Booking
+
 from .models.mango import Mango
 from .models.user import User
 from .models.pet import Pet
+from .models.booking import Booking
 
 
 class MangoSerializer(serializers.ModelSerializer):
@@ -59,4 +62,18 @@ class PetReadSerializer(serializers.ModelSerializer):
         model = Pet
         fields = '__all__'
 
-class Boo
+class BookingSerializer(serializers.ModelSerializer):
+    pet = serializers.StringRelatedField()
+    sitter = serializers.StringRelatedField()
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+class BookingReadSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Booking
+        fields = '__all__'
+
+
+
+

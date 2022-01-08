@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from pet import Pet
+from .pet import Pet
 
 # Create your models here.
 class Booking(models.Model):
