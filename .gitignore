@@ -1,6 +1,7 @@
 # Python .gitignore taken from https://github.com/navdeep-G/samplemod/blob/master/.gitignore
 
 # Byte-compiled / optimized / DLL files
+.env
 __pycache__/
 *.py[cod]
 *$py.class
