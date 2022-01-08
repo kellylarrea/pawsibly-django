@@ -4,75 +4,75 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
-from ..models.mango import Mango
-from ..serializers import MangoSerializer
+from ..models.pet import Pet
+from ..serializers import PetSerializer
 
 # Create your views here.
-class Mangos(generics.ListCreateAPIView):
+class Pet(generics.ListCreateAPIView):
     permission_classes=(IsAuthenticated,)
-    serializer_class = MangoSerializer
+    serializer_class = PetSerializer
     def get(self, request):
         """Index request"""
-        # Get all the mangos:
-        # mangos = Mango.objects.all()
-        # Filter the mangos by owner, so you can only see your owned mangos
-        mangos = Mango.objects.filter(owner=request.user.id)
+        # Get all the pets:
+        # pets = Pet.objects.all()
+        # Filter the pets by owner, so you can only see your owned pets
+        pets = Pet.objects.filter(owner=request.user.id)
         # Run the data through the serializer
-        data = MangoSerializer(mangos, many=True).data
-        return Response({ 'mangos': data })
+        data = PetSerializer(pets, many=True).data
+        return Response({ 'pets': data })
 
     def post(self, request):
         """Create request"""
         # Add user to request data object
-        request.data['mango']['owner'] = request.user.id
-        # Serialize/create mango
-        mango = MangoSerializer(data=request.data['mango'])
-        # If the mango data is valid according to our serializer...
-        if mango.is_valid():
-            # Save the created mango & send a response
-            mango.save()
-            return Response({ 'mango': mango.data }, status=status.HTTP_201_CREATED)
+        request.data['pet']['owner'] = request.user.id
+        # Serialize/create pet
+        pet = PetSerializer(data=request.data['pet'])
+        # If the pet data is valid according to our serializer...
+        if pet.is_valid():
+            # Save the created pet & send a response
+            pet.save()
+            return Response({ 'pet': pet.data }, status=status.HTTP_201_CREATED)
         # If the data is not valid, return a response with the errors
-        return Response(mango.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class MangoDetail(generics.RetrieveUpdateDestroyAPIView):
+class PetDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=(IsAuthenticated,)
     def get(self, request, pk):
         """Show request"""
-        # Locate the mango to show
-        mango = get_object_or_404(Mango, pk=pk)
-        # Only want to show owned mangos?
-        if request.user != mango.owner:
-            raise PermissionDenied('Unauthorized, you do not own this mango')
+        # Locate the pet to show
+        pet = get_object_or_404(Pet, pk=pk)
+        # Only want to show owned pets?
+        if request.user != pet.owner:
+            raise PermissionDenied('Unauthorized, you do not own this Pet')
 
         # Run the data through the serializer so it's formatted
-        data = MangoSerializer(mango).data
-        return Response({ 'mango': data })
+        data = PetSerializer(pet).data
+        return Response({ 'pet': data })
 
     def delete(self, request, pk):
         """Delete request"""
-        # Locate mango to delete
+        # Locate pet to delete
         mango = get_object_or_404(Mango, pk=pk)
-        # Check the mango's owner against the user making this request
-        if request.user != mango.owner:
-            raise PermissionDenied('Unauthorized, you do not own this mango')
+        # Check the pet's owner against the user making this request
+        if request.user != pet.owner:
+            raise PermissionDenied('Unauthorized, you do not own this pet')
         # Only delete if the user owns the  mango
-        mango.delete()
+        pet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def partial_update(self, request, pk):
         """Update Request"""
-        # Locate Mango
-        # get_object_or_404 returns a object representation of our Mango
-        mango = get_object_or_404(Mango, pk=pk)
-        # Check the mango's owner against the user making this request
-        if request.user != mango.owner:
-            raise PermissionDenied('Unauthorized, you do not own this mango')
+        # Locate Pet
+        # get_object_or_404 returns a object representation of our Pet
+        pet = get_object_or_404(Pet, pk=pk)
+        # Check the pets's owner against the user making this request
+        if request.user != pet.owner:
+            raise PermissionDenied('Unauthorized, you do not own this pet')
 
         # Ensure the owner field is set to the current user's ID
-        request.data['mango']['owner'] = request.user.id
+        request.data['pet']['owner'] = request.user.id
         # Validate updates with serializer
-        data = MangoSerializer(mango, data=request.data['mango'], partial=True)
+        data = PetSerializer(pet, data=request.data['pet'], partial=True)
         if data.is_valid():
             # Save & send a 204 no content
             data.save()
