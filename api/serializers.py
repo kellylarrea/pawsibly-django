@@ -4,7 +4,6 @@ from rest_framework import serializers
 from api.models.booking import Booking
 
 from .models.mango import Mango
-from .models.user import User
 from .models.pet import Pet
 from .models.booking import Booking
 from .models.review import Review
@@ -23,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
-        fields = ('id', 'email', 'password')
+        fields = '__all__'
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
 
     # This create method will be used for model creation
@@ -46,6 +45,7 @@ class UserRegisterSerializer(serializers.Serializer):
             raise serializers.ValidationError('Please make sure your passwords match.')
         # if all is well, return the data
         return data
+
 
 class ChangePasswordSerializer(serializers.Serializer):
     model = get_user_model()

@@ -2,7 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.conf import settings
 from django.db.models.fields import BooleanField
+from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from rest_framework.serializers import Serializer
+
+
 
 class UserManager(BaseUserManager):
     """Manager for user profiles"""
@@ -70,6 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     
+    
 
 
     # Any time we call User.objects (such as in objects.all() or objects.filter())
@@ -104,3 +109,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.token = None
         self.save()
         return self
+
+    def as_dict(self):
+        return f"{self.name}"

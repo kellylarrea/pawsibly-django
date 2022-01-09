@@ -1,3 +1,4 @@
+
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -5,15 +6,18 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import status, generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user, authenticate, login, logout
-
-from ..serializers import UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer
 from ..models.user import User
+from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer
 
-class User(generics.ListAPIView):
+class Users(generics.ListCreateAPIView):
+    # permission_classes=(IsAuthenticated,)
+    # serializer_class = UserSerializer
     authentication_classes = ()
     permission_classes = ()
+    serializer_class = UserSerializer
     def get(self, request):
         """Index request"""
+        print(request)
         # Get all the pets:
         # pets = Pet.objects.all()
         # Filter the pets by owner, so you can only see your owned pets
@@ -21,7 +25,7 @@ class User(generics.ListAPIView):
         # Run the data through the serializer
         data = UserSerializer(user, many=True).data
         return Response({ 'user': data })
-    
+
 
 class SignUp(generics.CreateAPIView):
     # Override the authentication/permissions classes so this endpoint
@@ -61,7 +65,7 @@ class SignIn(generics.CreateAPIView):
     def post(self, request):
         creds = request.data['credentials']
         print(creds)
-        # We can pass our email and password along with the request to the
+        # We can pass our  and password along with the request to the
         # `authenticate` method. If we had used the default user, we would need
         # to send the `username` instead of `email`.
         user = authenticate(request, email=creds['email'], password=creds['password'])

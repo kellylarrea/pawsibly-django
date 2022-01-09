@@ -8,15 +8,16 @@ from ..models.pet import Pet
 from ..serializers import PetSerializer
 
 # Create your views here.
-class Pet(generics.ListCreateAPIView):
+class Pets(generics.ListCreateAPIView):
     permission_classes=(IsAuthenticated,)
     serializer_class = PetSerializer
+
     def get(self, request):
         """Index request"""
         # Get all the pets:
         # pets = Pet.objects.all()
         # Filter the pets by owner, so you can only see your owned pets
-        pets = Pet.objects.filter(owner=request.user.id)
+        pets = Pet.objects.filter(pets_owner=request.user.id)
         # Run the data through the serializer
         data = PetSerializer(pets, many=True).data
         return Response({ 'pets': data })
