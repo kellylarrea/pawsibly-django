@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
-        model = get_user_model()
+        model = User
         fields = ('id', 'email', 'password')
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
 

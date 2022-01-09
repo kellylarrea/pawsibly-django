@@ -18,7 +18,7 @@ class Pet(generics.ListCreateAPIView):
         # Filter the pets by owner, so you can only see your owned pets
         pets = Pet.objects.filter(owner=request.user.id)
         # Run the data through the serializer
-        data = PetSerializer(pets, many=True).data
+        data = PetReadSerializer(pets, many=True).data
         return Response({ 'pets': data })
 
     def post(self, request):
@@ -46,13 +46,13 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this Pet')
 
         # Run the data through the serializer so it's formatted
-        data = PetSerializer(pet).data
+        data = PetReadSerializer(pet).data
         return Response({ 'pet': data })
 
     def delete(self, request, pk):
         """Delete request"""
         # Locate pet to delete
-        mango = get_object_or_404(Mango, pk=pk)
+        pet = get_object_or_404(Mango, pk=pk)
         # Check the pet's owner against the user making this request
         if request.user != pet.owner:
             raise PermissionDenied('Unauthorized, you do not own this pet')

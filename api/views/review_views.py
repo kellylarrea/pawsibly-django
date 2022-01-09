@@ -18,7 +18,7 @@ class Review(generics.ListCreateAPIView):
         # Filter the reviews by owner, so you can only see your owned reviews
         reviews = Review.objects.filter(owner=request.user.id)
         # Run the data through the serializer
-        data = ReviewSerializer(reviews, many=True).data
+        data = ReviewReadSerializer(reviews, many=True).data
         return Response({ 'reviews': data })
 
     def post(self, request):
@@ -46,7 +46,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this review')
 
         # Run the data through the serializer so it's formatted
-        data = ReviewSerializer(review).data
+        data = ReviewReadSerializer(review).data
         return Response({ 'review': data })
 
     def delete(self, request, pk):
