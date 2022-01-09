@@ -10,7 +10,7 @@ from ..models.user import User
 from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer
 
 class Users(generics.ListCreateAPIView):
-    # permission_classes=(IsAuthenticated,)
+    # permission_classes=(IsAuthenticated,) 
     # serializer_class = UserSerializer
     authentication_classes = ()
     permission_classes = ()
@@ -24,8 +24,24 @@ class Users(generics.ListCreateAPIView):
         user = User.objects.all()
         # Run the data through the serializer
         data = UserSerializer(user, many=True).data
-        return Response({ 'user': data })
+        return Response({ 'user': data }
+        )
 
+    def post(self, request):
+        """Create request"""
+        # Add user to request data object
+        request.data['pet']['owner'] = request.user.id
+        # Serialize/create pet
+        pet = PetSerializer(data=request.data['pet'])
+        # If the pet data is valid according to our serializer...
+        if pet.is_valid():
+            # Save the created pet & send a response
+            pet.save()
+            return Response({ 'pet': pet.data }, status=status.HTTP_201_CREATED)
+        # If the data is not valid, return a response with the errors
+        return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    
 
 class SignUp(generics.CreateAPIView):
     # Override the authentication/permissions classes so this endpoint
@@ -38,7 +54,7 @@ class SignUp(generics.CreateAPIView):
 
     def post(self, request):
         # Pass the request data to the serializer to validate it
-        user = UserRegisterSerializer(data=request.data['credentials'])
+        user = UserRegisterSerializer(data=request.data)
         # If that data is in the correct format...
         if user.is_valid():
             # Actually create the user using the UserSerializer (the `create` method defined there)

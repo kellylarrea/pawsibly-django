@@ -3,10 +3,8 @@ curl "http://localhost:8000/sign-in/" \
   --request POST \
   --header "Content-Type: application/json" \
   --data '{
-    "credentials": {
       "email": "'"${EMAIL}"'",
       "password": "'"${PASSWORD}"'"
-    }
   }'
 
-echo
+echo        
