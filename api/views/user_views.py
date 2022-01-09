@@ -79,7 +79,7 @@ class SignIn(generics.CreateAPIView):
     serializer_class = UserSerializer
 
     def post(self, request):
-        creds = request.data['credentials']
+        creds = request.data
         print(creds)
         # We can pass our  and password along with the request to the
         # `authenticate` method. If we had used the default user, we would need
