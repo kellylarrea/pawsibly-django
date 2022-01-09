@@ -7,23 +7,23 @@ from rest_framework import status, generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user, authenticate, login, logout
 from ..models.user import User
-from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer
+from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer, UserReadSerializer
 
-class Users(generics.ListCreateAPIView):
+class Sitters(generics.ListCreateAPIView):
     # permission_classes=(IsAuthenticated,) 
     # serializer_class = UserSerializer
     authentication_classes = ()
     permission_classes = ()
-    serializer_class = UserSerializer
+    serializer_class = UserReadSerializer
     def get(self, request):
         """Index request"""
         print(request)
         # Get all the pets:
         # pets = Pet.objects.all()
         # Filter the pets by owner, so you can only see your owned pets
-        user = User.objects.all()
+        user = User.objects.filter(sitter = False)
         # Run the data through the serializer
-        data = UserSerializer(user, many=True).data
+        data = UserReadSerializer(user, many=True).data
         return Response({ 'user': data }
         )
 

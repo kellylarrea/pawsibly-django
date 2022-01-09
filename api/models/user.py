@@ -66,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True)
     location = models.IntegerField(null=True)
-    sitter = models.BooleanField(null=True)
+    sitter = models.BooleanField(default=False)
     supersitter = models.BooleanField(null=True)
     pricing = models.IntegerField(null=True)
     numReviews = models.IntegerField(null=True, blank=True, default=0) 

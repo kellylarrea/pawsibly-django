@@ -14,6 +14,18 @@ class MangoSerializer(serializers.ModelSerializer):
         model = Mango
         fields = ('id', 'name', 'color', 'ripe', 'owner')
 
+class UserReadSerializer(serializers.ModelSerializer):
+    # This model serializer will be used for User creation
+    # The login serializer also inherits from this serializer
+    # in order to require certain data for login
+    class Meta:
+        # get_user_model will get the user model (this is required)
+        # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
+        model = get_user_model()
+        fields = '__all__'
+        
+
+
 class UserSerializer(serializers.ModelSerializer):
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer

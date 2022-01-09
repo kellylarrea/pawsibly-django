@@ -17,7 +17,7 @@ class Pets(generics.ListCreateAPIView):
         # Get all the pets:
         # pets = Pet.objects.all()
         # Filter the pets by owner, so you can only see your owned pets
-        pets = Pet.objects.filter(pets_owner=request.user.id)
+        pets = Pet.objects.filter(pet_owner=request.user.id)
         # Run the data through the serializer
         data = PetSerializer(pets, many=True).data
         return Response({ 'pets': data })
