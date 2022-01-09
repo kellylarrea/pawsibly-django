@@ -14,6 +14,12 @@ class MangoSerializer(serializers.ModelSerializer):
         model = Mango
         fields = ('id', 'name', 'color', 'ripe', 'owner')
 
+class PetSerializer(serializers.ModelSerializer):
+    pet_owner = serializers.StringRelatedField()
+    class Meta:
+        model = Pet
+        fields = '__all__'
+
 class UserReadSerializer(serializers.ModelSerializer):
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
@@ -27,6 +33,7 @@ class UserReadSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -64,16 +71,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     old = serializers.CharField(required=True)
     new = serializers.CharField(required=True)
 
-class PetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pet
-        fields = '__all__'
 
-class PetReadSerializer(serializers.ModelSerializer):
-    pets_owned = serializers.StringRelatedField()
-    class Meta:
-        model = Pet
-        fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
