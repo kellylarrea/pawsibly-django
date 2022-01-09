@@ -24,7 +24,8 @@ class Mangos(generics.ListCreateAPIView):
     def post(self, request):
         """Create request"""
         # Add user to request data object
-        request.data['mango']['owner'] = request.user.id
+        print(request.data)
+        request.data['owner'] = request.user.id
         # Serialize/create mango
         mango = MangoSerializer(data=request.data['mango'])
         # If the mango data is valid according to our serializer...

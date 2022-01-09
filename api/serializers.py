@@ -4,7 +4,6 @@ from rest_framework import serializers
 from api.models.booking import Booking
 
 from .models.mango import Mango
-from .models.user import User
 from .models.pet import Pet
 from .models.booking import Booking
 from .models.review import Review
@@ -15,7 +14,26 @@ class MangoSerializer(serializers.ModelSerializer):
         model = Mango
         fields = ('id', 'name', 'color', 'ripe', 'owner')
 
+class PetSerializer(serializers.ModelSerializer):
+    pet_owner = serializers.StringRelatedField()
+    class Meta:
+        model = Pet
+        fields = '__all__'
+
+class UserReadSerializer(serializers.ModelSerializer):
+    # This model serializer will be used for User creation
+    # The login serializer also inherits from this serializer
+    # in order to require certain data for login
+    class Meta:
+        # get_user_model will get the user model (this is required)
+        # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
+        model = get_user_model()
+        fields = '__all__'
+        
+
+
 class UserSerializer(serializers.ModelSerializer):
+    # pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -47,21 +65,13 @@ class UserRegisterSerializer(serializers.Serializer):
         # if all is well, return the data
         return data
 
+
 class ChangePasswordSerializer(serializers.Serializer):
     model = get_user_model()
     old = serializers.CharField(required=True)
     new = serializers.CharField(required=True)
 
-class PetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pet
-        fields = '__all__'
 
-class PetReadSerializer(serializers.ModelSerializer):
-    pets_owned = serializers.StringRelatedField()
-    class Meta:
-        model = Pet
-        fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
