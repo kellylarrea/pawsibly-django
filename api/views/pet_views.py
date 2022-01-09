@@ -37,13 +37,14 @@ class Pets(generics.ListCreateAPIView):
         return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PetDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PetSerializer
     permission_classes=(IsAuthenticated,)
     def get(self, request, pk):
         """Show request"""
         # Locate the pet to show
         pet = get_object_or_404(Pet, pk=pk)
         # Only want to show owned pets?
-        if request.user != pet.owner:
+        if request.user != pet.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this Pet')
 
         # Run the data through the serializer so it's formatted
