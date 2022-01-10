@@ -8,6 +8,7 @@ from rest_framework.serializers import Serializer
 
 
 
+
 class UserManager(BaseUserManager):
     """Manager for user profiles"""
 
@@ -73,6 +74,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+ 
+    
     
     
 

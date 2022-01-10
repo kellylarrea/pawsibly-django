@@ -18,7 +18,7 @@ class Reviews(generics.ListCreateAPIView):
         # Filter the reviews by owner, so you can only see your owned reviews
         reviews = Review.objects.filter(pet_owner=request.user.id)
         # Run the data through the serializer
-        data = ReviewReadSerializer(reviews, many=True).data
+        data = ReviewSerializer(reviews, many=True).data
         return Response({ 'reviews': data })
 
     def post(self, request):
