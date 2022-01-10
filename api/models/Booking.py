@@ -24,4 +24,5 @@ class Booking(models.Model):
     return {
         'start_date': self.start_date,
         'end_data': self.end_date,
+        'sitter': self.sitter
       }
