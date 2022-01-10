@@ -19,14 +19,12 @@ class Pet(models.Model):
     # through_fields=('owner_pet','sitter')
     # )
 
-    pet_sitter = models.ForeignKey(User, related_name='client_pet', on_delete=models.CASCADE,blank=True, null=True)
-    booking_pet = models.ManyToManyField(
-    User,
-    through=Booking,
-    through_fields=('owner_pet','sitter')
-    )
+    # booking_pet = models.ManyToManyField(
+    # User,
+    # through=Booking,
+    # through_fields=('owner_pet','sitter')
+    # )
 
-   
 
     def __str__(self):
         return self.name

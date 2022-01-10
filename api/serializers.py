@@ -79,22 +79,6 @@ class ChangePasswordSerializer(serializers.Serializer):
     old = serializers.CharField(required=True)
     new = serializers.CharField(required=True)
 
-
-
-<<<<<<< HEAD
-class BookingSerializer(serializers.ModelSerializer):
-    owner_pet = serializers.StringRelatedField()
-    sitter = serializers.StringRelatedField()
-    class Meta:
-        model = Booking
-        fields = ('id','start_date', 'end_date', 'sitter', 'owner_pet')
-=======
-# class BookingSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Booking
-#         fields = '__all__'
->>>>>>> refs/remotes/origin/main
-
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
