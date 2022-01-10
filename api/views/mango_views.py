@@ -21,20 +21,20 @@ class Mangos(generics.ListCreateAPIView):
         data = MangoSerializer(mangos, many=True).data
         return Response({ 'mangos': data })
 
-    def post(self, request):
-        """Create request"""
-        # Add user to request data object
-        print(request.data)
-        request.data['owner'] = request.user.id
-        # Serialize/create mango
-        mango = MangoSerializer(data=request.data['mango'])
-        # If the mango data is valid according to our serializer...
-        if mango.is_valid():
-            # Save the created mango & send a response
-            mango.save()
-            return Response({ 'mango': mango.data }, status=status.HTTP_201_CREATED)
-        # If the data is not valid, return a response with the errors
-        return Response(mango.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request):
+    #     """Create request"""
+    #     # Add user to request data object
+    #     print(request.data)
+    #     request.data['owner'] = request.user.id
+    #     # Serialize/create mango
+    #     mango = MangoSerializer(data=request.data['mango'])
+    #     # If the mango data is valid according to our serializer...
+    #     if mango.is_valid():
+    #         # Save the created mango & send a response
+    #         mango.save()
+    #         return Response({ 'mango': mango.data }, status=status.HTTP_201_CREATED)
+    #     # If the data is not valid, return a response with the errors
+    #     return Response(mango.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MangoDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=(IsAuthenticated,)
