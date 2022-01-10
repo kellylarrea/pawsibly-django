@@ -14,17 +14,19 @@ class Bookings(generics.ListCreateAPIView):
     def get(self, request):
         """Index request"""
         # Get all the bookings:
-        # bookings = Booking.objects.all()
+        bookings = Booking.objects.all()
+        print(bookings)
         # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(owner=request.user.id)
+        bookings = Booking.objects.filter(owner_pet_id=request.user.id)
         # Run the data through the serializer
-        data = BookingReadSerializer(bookings, many=True).data
+        data = BookingSerializer(bookings, many=True).data
         return Response({ 'bookings': data })
 
     def post(self, request):
         """Create request"""
         # Add user to request data object
-        request.data['booking']['owner'] = request.user.id
+        booking_user = request.user
+        booking_data = Booking(pet = booking_user)
         # Serialize/create booking
         booking = BookingSerializer(data=request.data['booking'])
         # If the booking data is valid according to our serializer...
