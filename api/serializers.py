@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
-        model = User
+        model = get_user_model()
         fields = ('id', 'email', 'password')
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
 
@@ -86,16 +86,13 @@ class BookingReadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ReviewSerializers(serializers.ModelSerializer):
-    client_reviews = UserSerializer()
+class ReviewSerializer(serializers.ModelSerializer):
+    # client_reviews = UserSerializer()
     class Meta:
         model = Review
+        fields = ('id','review', 'rating', 'pet_owner', 'sitter')
 
-class ReviewReadSerializers(serializers.ModelSerializer):
+class ReviewReadSerializer(serializers.ModelSerializer):
      class Meta:
         model = Review
         fields = '__all__'
-
-
-
-
