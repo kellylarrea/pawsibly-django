@@ -15,12 +15,16 @@ class MangoSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'color', 'ripe', 'owner')
 
 class PetSerializer(serializers.ModelSerializer):
-    pet_owner = serializers.StringRelatedField()
+
     class Meta:
         model = Pet
-        fields = '__all__'
+        fields  = ('id', 'name', 'pet_owner')
+
+    def create(self, validated_data):
+        return Pet(**validated_data)
 
 class UserReadSerializer(serializers.ModelSerializer):
+    # pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -29,7 +33,9 @@ class UserReadSerializer(serializers.ModelSerializer):
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
         fields = '__all__'
-        
+    # This create method will be used for model creation
+    # def create(self, validated_data):
+        # return get_user_model().objects.create_user(**validated_data)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,11 +43,11 @@ class UserSerializer(serializers.ModelSerializer):
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
-    class Meta:
+    class Meta:       
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
-        fields = ('id', 'email', 'password')
+        fields = ('id', 'email', 'password', 'pets_owned')
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
 
     # This create method will be used for model creation
@@ -86,12 +92,13 @@ class BookingReadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ReviewSerializers(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     client_reviews = UserSerializer()
     class Meta:
         model = Review
+        fields = '__all__'
 
-class ReviewReadSerializers(serializers.ModelSerializer):
+class ReviewReadSerializer(serializers.ModelSerializer):
      class Meta:
         model = Review
         fields = '__all__'

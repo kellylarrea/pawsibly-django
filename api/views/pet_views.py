@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth import get_user, get_user_model
 from ..models.pet import Pet
 from ..serializers import PetSerializer
 
@@ -11,7 +11,6 @@ from ..serializers import PetSerializer
 class Pets(generics.ListCreateAPIView):
     permission_classes=(IsAuthenticated,)
     serializer_class = PetSerializer
-
     def get(self, request):
         """Index request"""
         # Get all the pets:
@@ -24,25 +23,21 @@ class Pets(generics.ListCreateAPIView):
 
     def post(self, request):
         """Create request"""
-        # Add user to request data object 
-      
-        pet_data = request.data['pets']
-        print(pet_data)
-        print(type(pet_data))
-        pet_user = request.user.id
-        pet_data['pet_owner'] = pet_user
+        # Add user to reqpta object 
+        # pet_data = request.data['pets']
+        # pet_user = request.user.id
+        # pet_data['pet_owner'] = pet_user
+        pet_user = request.user
+        pet_data = Pet(pet_owner = pet_user)
+        pet = PetSerializer(pet_data, data=request.data)
+        if pet.is_valid():
+            # Save the created mango & send a response
+            pet.save()
+            return Response(pet.data, status=status.HTTP_201_CREATED)
+        # If the data is not valid, return a response with the errors
+        return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # pet = request.data['pet']
-        # request.data['name']['pet_owner'] = request.user.id
-        # # Serialize/create petpet
-         # pet = PetSerializer(data=request.data['pet'])
-        # # If the pet data is valid according to our serializer...
-        # if pet.is_valid():
-        #     # Save the created pet & send a response
-        #     pet.save()
-        #     return Response({ 'pet': pet.data }, status=status.HTTP_201_CREATED)
-        # # If the data is not valid, return a response with the errors
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+   
 
 class PetDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PetSerializer
@@ -80,12 +75,13 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this pet')
 
         # Ensure the owner field is set to the current user's ID
-        request.data['pet']['owner'] = request.user.id
+        pet_data =request.data['pets']
+        pet_data['pet_owner'] = request.user.id 
         # Validate updates with serializer
-        data = PetSerializer(pet, data=request.data['pet'], partial=True)
-        if data.is_valid():
+        ms = PetSerializer(pet, data=request.data, partial=True) 
+        if ms.is_valid():
             # Save & send a 204 no content
-            data.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            ms.save()
+            return Response(ms.data)
         # If the data is not valid, return a response with the errors
-        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(ms.errors, status=status.HTTP_400_BAD_REQUEST)

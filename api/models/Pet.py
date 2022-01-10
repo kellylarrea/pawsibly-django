@@ -10,11 +10,13 @@ class Pet(models.Model):
     related_name="pets_owned"
     )
 
+   
+
     def __str__(self):
         return self.name
 
+
     def as_dict(self):
         return {
-            'name': self.name,
-            'pet_owner': self.pet_owner,
+            'name': self.name
     }
