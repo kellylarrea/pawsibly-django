@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.relations import StringRelatedField
 
 from api.models.booking import Booking
 
@@ -40,7 +41,7 @@ class UserReadSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    
+    pets_owned = serializers.StringRelatedField()
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -86,18 +87,16 @@ class ChangePasswordSerializer(serializers.Serializer):
 #         fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
-    owner_pet = serializers.StringRelatedField()
-    sitter = serializers.StringRelatedField()
     class Meta:
         model = Booking
-        fields = ('id','start_date', 'end_date', 'sitter', 'owner_pet','sitter_id')
+        fields = ('id','start_date', 'end_date', 'sitter', 'owner_of_pet','sitter_id')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     # client_reviews = UserSerializer()
     class Meta:
         model = Review
-        fields = ('id','review', 'rating', 'pet_owner', 'user')
+        fields = ('id','review', 'rating', 'pet_owner', 'sitter')
 
 
 class ReviewReadSerializer(serializers.ModelSerializer):

@@ -19,7 +19,7 @@ class Bookings(generics.ListCreateAPIView):
         bookings = Booking.objects.all()
         print(bookings)
         # Filter the bookings by owner, so you can only see the user's bookings
-        # bookings = Booking.objects.filter(owner_pet_id=request.user.id)
+        bookings = Booking.objects.filter(owner_of_pet_id=request.user.id)
         # if owner.pet.id ===   
         # print(bookings)
         # Run the data through the serializer
@@ -30,8 +30,19 @@ class Bookings(generics.ListCreateAPIView):
         """Create request"""
         # Add user to request data object
         print(request.data)
-        pet_owner = request.user
-        
+        user = request.user
+        booking_data = Booking(owner_of_pet = user )
+        booking = BookingSerializer(booking_data, data=request.data)
+        # If the review data is valid according to our serializer...
+        if booking.is_valid():
+            # Save the created review & send a response
+            r = booking.save()
+            return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
+        # # If the data is not valid, return a response with the errors
+        return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
+       
+
+
 
         # request.data['booking']['owner'] = request.user.id
         # # Serialize/create booking

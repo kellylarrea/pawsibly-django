@@ -10,9 +10,13 @@ class Booking(models.Model):
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
   start_date = models.DateTimeField()
   end_date = models.DateTimeField()
-  owner_pet = models.ForeignKey("Pet", on_delete=models.CASCADE)
-  sitter = models.ForeignKey("User", on_delete=models.CASCADE)
-  
+  # owner_pet = models.ForeignKey("Pet", related_name = "pet_booking", on_delete=models.CASCADE)
+  owner_of_pet = models.ForeignKey(
+      get_user_model(), related_name = "pets_owmed",
+      on_delete=models.CASCADE, blank=True,null=True
+  )
+  sitter = models.ForeignKey("User",related_name="sitter_bookings", on_delete=models.CASCADE)
+ 
   
 
   def __str__(self):
@@ -22,4 +26,5 @@ class Booking(models.Model):
     return {
         'start_date': self.start_date,
         'end_data': self.end_date,
+        'sitter': self.sitter
       }
