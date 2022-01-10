@@ -94,11 +94,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of the user"""
         return self.email
+        
 
-    def as_dict(self):
-        return {
-            'name': self.name,
-    }     
+                
 
     def get_auth_token(self):
         Token.objects.filter(user=self).delete()

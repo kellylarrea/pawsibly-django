@@ -1,4 +1,5 @@
 
+
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -9,21 +10,18 @@ from django.contrib.auth import get_user, authenticate, login, logout
 from ..models.user import User
 from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer, UserReadSerializer
 
-
 class Sitters(generics.ListCreateAPIView):
     # permission_classes=(IsAuthenticated,) 
     # serializer_class = UserSerializer
     authentication_classes = ()
     permission_classes = ()
     serializer_class = UserReadSerializer
-
     def get(self, request):
         """Index request"""
         print(request)
         # Get all the pets:
         # pets = Pet.objects.all()
         # Filter the pets by owner, so you can only see your owned pets
-
         user = User.objects.filter(sitter = False)
         # Run the data through the serializer
         data = UserReadSerializer(user, many=True).data

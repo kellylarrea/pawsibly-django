@@ -19,9 +19,11 @@ class Review(models.Model):
 
   def __str__(self):
       return self.review
+      
   def as_dict(self):
     """Returns dictionary version of Review models"""
     return {
+        'id':self.id,
         'review': self.review,
         'rating': self.rating,
         'created_at': self.created_at
