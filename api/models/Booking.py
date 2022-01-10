@@ -1,14 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-# from .user import User
-# from .pet import Pet
-
 
 # Create your models here.
 class Booking(models.Model):
   # define fields
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
-  start_date = models.DateTimeField()
+  start_date = models.DateTimeField()  
   end_date = models.DateTimeField()
   # owner_pet = models.ForeignKey("Pet", related_name = "pet_booking", on_delete=models.CASCADE)
   owner_of_pet = models.ForeignKey(
