@@ -79,7 +79,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Any time we call User.objects (such as in objects.all() or objects.filter())
     # make sure to use the custom user manager we created.
-    # objects = UserManager()
+    objects = UserManager()
 
     # Tell Django to use the email field as the unique identifier for the
     # user account instead of its built in behavior of using the username.
