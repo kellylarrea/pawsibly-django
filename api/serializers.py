@@ -24,6 +24,7 @@ class PetSerializer(serializers.ModelSerializer):
         return Pet(**validated_data)
 
 class UserReadSerializer(serializers.ModelSerializer):
+    pets_owned = PetSerializer(many=True)
     # pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
@@ -39,7 +40,7 @@ class UserReadSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # pets_owned = PetSerializer(many=True, read_only=True)
+    
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -79,24 +80,24 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 
-class BookingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Booking
-        fields = '__all__'
+# class BookingSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Booking
+#         fields = '__all__'
 
-class BookingReadSerializer(serializers.ModelSerializer):
-    pet = serializers.StringRelatedField()
+class BookingSerializer(serializers.ModelSerializer):
+    owner_pet = serializers.StringRelatedField()
     sitter = serializers.StringRelatedField()
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ('id','start_date', 'end_date', 'sitter', 'owner_pet','sitter_id')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     # client_reviews = UserSerializer()
     class Meta:
         model = Review
-        fields = ('id','review', 'rating', 'pet_owner', 'sitter')
+        fields = ('id','review', 'rating', 'pet_owner', 'user')
 
 
 class ReviewReadSerializer(serializers.ModelSerializer):
