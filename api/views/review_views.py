@@ -73,10 +73,8 @@ class ReviewsDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this review')
 
         # Ensure the owner field is set to the current user's ID
-        review_user = request.user
-        review_data = Review(pet_owner = review_user)
         # Validate updates with serializer
-        data = ReviewSerializer(review_data, data=request.data, partial=True)
+        data = ReviewSerializer(review,data=request.data['review'], partial=True)
         if data.is_valid():
             # Save & send a 204 no content
             data.save()
