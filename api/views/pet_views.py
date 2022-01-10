@@ -47,12 +47,13 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this Pet')
 
         # Run the data through the serializer so it's formatted
-        data = PetSerializer(pet).data
+        data = PetReadSerializer(pet).data
         return Response({ 'pet': data })
 
     def delete(self, request, pk):
         """Delete request"""
         # Locate pet to delete
+
         pet = get_object_or_404(Pet, pk=pk)
         # Check the pet's owner against the user making this request
         if request.user != pet.pet_owner:

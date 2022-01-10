@@ -39,7 +39,7 @@ class UserReadSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    pets_owned = PetSerializer(many=True, read_only=True)
+    # pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -93,16 +93,13 @@ class BookingReadSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    client_reviews = UserSerializer()
+    # client_reviews = UserSerializer()
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ('id','review', 'rating', 'pet_owner', 'sitter')
+
 
 class ReviewReadSerializer(serializers.ModelSerializer):
      class Meta:
         model = Review
         fields = '__all__'
-
-
-
-
