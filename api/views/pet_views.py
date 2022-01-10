@@ -22,11 +22,7 @@ class Pets(generics.ListCreateAPIView):
         return Response({ 'pets': data })
 
     def post(self, request):
-        """Create request"""
-        # Add user to reqpta object 
-        # pet_data = request.data['pets']
-        # pet_user = request.user.id
-        # pet_data['pet_owner'] = pet_user
+    
         pet_user = request.user
         pet_data = Pet(pet_owner = pet_user)
         pet = PetSerializer(pet_data, data=request.data)
@@ -61,7 +57,7 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
         # Check the pet's owner against the user making this request
         if request.user != pet.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this pet')
-        # Only delete if the user owns the  mango
+        # Only delete if the user owns the  pet
         pet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -75,10 +71,8 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this pet')
 
         # Ensure the owner field is set to the current user's ID
-        pet_data =request.data['pets']
-        pet_data['pet_owner'] = request.user.id 
         # Validate updates with serializer
-        ms = PetSerializer(pet, data=request.data, partial=True) 
+        ms = PetSerializer(pet, data=request.data['pet'], partial=True) 
         if ms.is_valid():
             # Save & send a 204 no content
             ms.save()
