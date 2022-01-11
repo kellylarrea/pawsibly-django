@@ -28,19 +28,32 @@ class Sitters(generics.ListCreateAPIView):
         return Response({ 'user': data }
         )
 
-    def post(self, request):
-        """Create request"""
-        # Add user to request data object
-        request.data['pet']['owner'] = request.user.id
-        # Serialize/create pet
-        pet = PetSerializer(data=request.data['pet'])
-        # If the pet data is valid according to our serializer...
-        if pet.is_valid():
-            # Save the created pet & send a response
-            pet.save()
-            return Response({ 'pet': pet.data }, status=status.HTTP_201_CREATED)
-        # If the data is not valid, return a response with the errors
-        return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
+class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
+    # permission_classes=(IsAuthenticated,)
+    serializer_class = UserReadSerializer
+    def get(self, request, pk):
+        """Show request"""
+        # Locate the booking to show
+        user = get_object_or_404(User, pk=pk)
+
+        # Run the data through the serializer so it's formatted
+        data = UserReadSerializer(user).data
+        return Response({ 'user': data })
+
+
+    # def post(self, request):
+    #     """Create request"""
+    #     # Add user to request data object
+    #     request.data['pet']['owner'] = request.user.id
+    #     # Serialize/create pet
+    #     pet = PetSerializer(data=request.data['pet'])
+    #     # If the pet data is valid according to our serializer...
+    #     if pet.is_valid():
+    #         # Save the created pet & send a response
+    #         pet.save()
+    #         return Response({ 'pet': pet.data }, status=status.HTTP_201_CREATED)
+    #     # If the data is not valid, return a response with the errors
+    #     return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
         
     
 
@@ -85,7 +98,7 @@ class SignIn(generics.CreateAPIView):
         # We can pass our  and password along with the request to the
         # `authenticate` method. If we had used the default user, we would need
         # to send the `username` instead of `email`.
-        user = authenticate(request, email=creds['email'], password=creds['password'])
+        user = authenticate(request, email=creds['credentials']['email'], password=creds['credentials']['password'])
         # Is our user is successfully authenticated...
         if user is not None:
             # And they're active...

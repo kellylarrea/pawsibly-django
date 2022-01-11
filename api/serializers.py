@@ -25,7 +25,7 @@ class PetSerializer(serializers.ModelSerializer):
         return Pet(**validated_data)
 
 class UserReadSerializer(serializers.ModelSerializer):
-    pets_owned = PetSerializer(many=True)
+    pet_owned = PetSerializer(many=True)
     # pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
@@ -41,7 +41,7 @@ class UserReadSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    pets_owned = serializers.StringRelatedField()
+    # pet_owned = serializers.StringRelatedField()
     # This model serializer will be used for User creation
     # The login serializer also inherits from this serializer
     # in order to require certain data for login
@@ -49,7 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
-        fields = ('id', 'email', 'password', 'pets_owned')
+        fields = ('id', 'email', 'password', 'zipcode')
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
 
     # This create method will be used for model creation
@@ -61,6 +61,8 @@ class UserRegisterSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=300, required=True)
     password = serializers.CharField(required=True)
     password_confirmation = serializers.CharField(required=True, write_only=True)
+    zipcode = serializers.CharField(max_length = 5, required=True)
+    
 
     def validate(self, data):
         # Ensure password & password_confirmation exist

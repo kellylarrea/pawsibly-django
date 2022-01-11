@@ -65,13 +65,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     # As with any Django models, we need to define the fields
     # for the model with the type and options:
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255, null=True)
-    location = models.IntegerField(null=True)
+    name = models.CharField(max_length=255, default='John Doe')
+    zipcode = models.CharField(max_length = 5, default='12345')
     sitter = models.BooleanField(default=False)
     supersitter = models.BooleanField(null=True)
     pricing = models.IntegerField(null=True)
-    numReviews = models.IntegerField(null=True, blank=True, default=0) 
-    rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    numReviews = models.IntegerField(default=0) 
+    rating = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
  
