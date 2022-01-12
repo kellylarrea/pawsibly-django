@@ -28,6 +28,17 @@ class Sitters(generics.ListCreateAPIView):
         return Response({ 'user': data }
         )
 
+class Profile(generics.ListCreateAPIView):
+    permission_classes=(IsAuthenticated,) 
+    serializer_class = UserReadSerializer
+    def get(self, request):
+        print(request)
+        user_data = request.user
+        # Run the data through the serializer
+        data = UserReadSerializer(user_data).data
+        return Response({ 'user': data }
+        )
+
 class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes=(IsAuthenticated,)
     serializer_class = UserReadSerializer
@@ -55,10 +66,9 @@ class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
     #     # If the data is not valid, return a response with the errors
     #     return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
         
-    
 
 class SignUp(generics.CreateAPIView):
-    # Override the authentication/permissions classes so this endpoint
+    # Override the authentication/permis sions classes so this endpoint
     # is not authenticated & we don't need any permissions to access it.
     authentication_classes = ()
     permission_classes = ()
@@ -94,11 +104,13 @@ class SignIn(generics.CreateAPIView):
 
     def post(self, request):
         creds = request.data
-        print(creds)
+        print(type(creds))
         # We can pass our  and password along with the request to the
         # `authenticate` method. If we had used the default user, we would need
         # to send the `username` instead of `email`.
         user = authenticate(request, email=creds['credentials']['email'], password=creds['credentials']['password'])
+   
+
         # Is our user is successfully authenticated...
         if user is not None:
             # And they're active...
