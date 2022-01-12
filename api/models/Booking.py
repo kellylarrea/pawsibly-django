@@ -9,7 +9,7 @@ class Booking(models.Model):
   end_date = models.DateTimeField()
   # owner_pet = models.ForeignKey("Pet", related_name = "pet_booking", on_delete=models.CASCADE)
   owner_of_pet = models.ForeignKey(
-      get_user_model(), related_name = "pets_owned",
+      get_user_model(),
       on_delete=models.CASCADE, blank=True,null=True
   )
   sitter = models.ForeignKey("User",related_name="sitter_bookings", on_delete=models.CASCADE)
