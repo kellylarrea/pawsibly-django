@@ -1,9 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
-
-from api.models.booking import Booking
-
 from .models.mango import Mango
 from .models.pet import Pet
 from .models.booking import Booking
