@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
     #            This ensures the proper error is thrown if a password is
     #            not provided.
     # **extra_fields:  Just in case there are extra arguments passed.
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password=None,  **extra_fields):
         """Create a new user profile"""
         # Add a custom validation error
         if not email:
@@ -65,13 +65,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     # As with any Django models, we need to define the fields
     # for the model with the type and options:
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255, null=True)
-    zipcode = models.CharField(max_length=5, default='12345')
+    name = models.CharField(max_length=255, default='John Doe')
+    zipcode = models.CharField(max_length = 5, default='12345')
     sitter = models.BooleanField(default=False)
     supersitter = models.BooleanField(null=True)
     pricing = models.IntegerField(null=True)
-    numReviews = models.IntegerField(null=True, blank=True, default=0) 
-    rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    numReviews = models.IntegerField(default=0) 
+    rating = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
  
@@ -97,6 +97,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of the user"""
         return self.email
+
         
 
                 
@@ -115,4 +116,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self
 
     def as_dict(self):
-        return f"{self.name}"
+        return f"{self.name}, {self.zipcode}"

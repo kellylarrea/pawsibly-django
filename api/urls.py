@@ -2,16 +2,18 @@ from django.urls import path
 from .views.mango_views import Mangos, MangoDetail
 
 from .views.pet_views import Pets, PetDetail
-from .views.user_views import SignUp, SignIn, SignOut, ChangePassword, Sitters
+from .views.user_views import SignUp, SignIn, SignOut, ChangePassword, Sitters, Profile, SitterDetail
 from .views.booking_views import Bookings, BookingsDetail
 from .views.review_views import Reviews, ReviewsDetail
+
 # from views.booking_views import Review
 
 
 urlpatterns = [
   	# Restful routing
-
+    path('profile',Profile.as_view(), name='users'),
     path('users',Sitters.as_view(), name='users'),
+    path('users/<int:pk>/',SitterDetail.as_view(), name='sitter_detail'),
     path('bookings',Bookings.as_view(), name='bookings'),
     path('bookings/<int:pk>/', BookingsDetail.as_view(), name='bookings_detail'),
     path('pets', Pets.as_view(), name='pets'),

@@ -10,9 +10,14 @@ class Pet(models.Model):
     pet_owner = models.ForeignKey(
     get_user_model(),
     on_delete=models.CASCADE,
-    related_name="pet_owned"
+    related_name="pets_owned"
     )
     pet_sitter = models.ForeignKey(User, related_name='client_pet', on_delete=models.CASCADE,blank=True, null=True)
+    # booking_pet = models.ManyToManyField(
+    # User,
+    # through=Booking,
+    # through_fields=('owner_pet','sitter')
+    # )
     # booking_pet = models.ManyToManyField(
     # User,
     # through=Booking,
