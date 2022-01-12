@@ -29,7 +29,7 @@ class Sitters(generics.ListCreateAPIView):
         )
 
 class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes=(IsAuthenticated,)
+    permission_classes=()
     serializer_class = UserReadSerializer
     def get(self, request, pk):
         """Show request"""
