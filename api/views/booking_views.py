@@ -4,8 +4,9 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
+
 from ..models.booking import Booking
-from ..serializers import BookingSerializer, BookingReadSerializer
+from ..serializers import BookingSerializer
 
 # Create your views here.
 class Bookings(generics.ListCreateAPIView):
@@ -13,27 +14,46 @@ class Bookings(generics.ListCreateAPIView):
     serializer_class = BookingSerializer
     def get(self, request):
         """Index request"""
-        # Get all the bookings:
-        # bookings = Booking.objects.all()
+        # Get all the bookings
+        # user.pet.id
+        bookings = Booking.objects.all()
+        print(bookings)
         # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(owner=request.user.id)
+        bookings = Booking.objects.filter(owner_of_pet_id=request.user.id)
+        # if owner.pet.id ===   
+        # print(bookings)
         # Run the data through the serializer
-        data = BookingReadSerializer(bookings, many=True).data
+        data = BookingSerializer(bookings, many=True).data
         return Response({ 'bookings': data })
 
     def post(self, request):
         """Create request"""
         # Add user to request data object
-        request.data['booking']['owner'] = request.user.id
-        # Serialize/create booking
-        booking = BookingSerializer(data=request.data['booking'])
-        # If the booking data is valid according to our serializer...
+        print(request.data)
+        user = request.user
+        booking_data = Booking(owner_of_pet = user )
+        booking = BookingSerializer(booking_data, data=request.data)
+        # If the review data is valid according to our serializer...
         if booking.is_valid():
-            # Save the created booking & send a response
-            booking.save()
+            # Save the created review & send a response
+            r = booking.save()
             return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
+        # # If the data is not valid, return a response with the errors
+        return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
+       
+
+
+
+        # request.data['booking']['owner'] = request.user.id
+        # # Serialize/create booking
+        # booking = BookingSerializer(data=request.data['booking'])
+        # # If the booking data is valid according to our serializer...
+        # if booking.is_valid():
+        #     # Save the created booking & send a response
+        #     booking.save()
+        #     return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
         # If the data is not valid, return a response with the errors
-        return Response(booking.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=(IsAuthenticated,)

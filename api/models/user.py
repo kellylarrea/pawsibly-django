@@ -8,6 +8,7 @@ from rest_framework.serializers import Serializer
 
 
 
+
 class UserManager(BaseUserManager):
     """Manager for user profiles"""
 
@@ -65,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # for the model with the type and options:
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True)
-    location = models.IntegerField(null=True)
+    zipcode = models.CharField(max_length=5, default='12345')
     sitter = models.BooleanField(default=False)
     supersitter = models.BooleanField(null=True)
     pricing = models.IntegerField(null=True)
@@ -73,6 +74,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+ 
+    
     
     
 

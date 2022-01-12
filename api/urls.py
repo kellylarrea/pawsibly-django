@@ -21,8 +21,8 @@ urlpatterns = [
     path('pets/<int:pk>/', PetDetail.as_view(), name='pet_detail'),
     path('reviews/', Reviews.as_view(), name='reviews'),
     path('reviews/<int:pk>', ReviewsDetail.as_view(), name='reviews_detail'),
-    path('sign-up/', SignUp.as_view(), name='sign-up'),
-    path('sign-in/', SignIn.as_view(), name='sign-in'),
-    path('sign-out/', SignOut.as_view(), name='sign-out'),
+    path('sign-up', SignUp.as_view(), name='sign-up'),
+    path('sign-in', SignIn.as_view(), name='sign-in'),
+    path('sign-out', SignOut.as_view(), name='sign-out'),
     path('change-pw/', ChangePassword.as_view(), name='change-pw')
 ]

@@ -47,7 +47,7 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this Pet')
 
         # Run the data through the serializer so it's formatted
-        data = PetReadSerializer(pet).data
+        data = PetSerializer(pet).data
         return Response({ 'pet': data })
 
     def delete(self, request, pk):
