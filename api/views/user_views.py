@@ -28,24 +28,22 @@ class Sitters(generics.ListCreateAPIView):
         return Response({ 'user': data }
         )
 
-    def post(self, request):
-        """Create request"""
-        # Add user to request data object
-        request.data['pet']['owner'] = request.user.id
-        # Serialize/create pet
-        pet = PetSerializer(data=request.data['pet'])
-        # If the pet data is valid according to our serializer...
-        if pet.is_valid():
-            # Save the created pet & send a response
-            pet.save()
-            return Response({ 'pet': pet.data }, status=status.HTTP_201_CREATED)
-        # If the data is not valid, return a response with the errors
-        return Response(pet.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    
+class Profile(generics.ListCreateAPIView):
+    permission_classes=(IsAuthenticated,) 
+    serializer_class = UserReadSerializer
+    def get(self, request):
+        print(request)
+        user_data = request.user
+        # Run the data through the serializer
+        data = UserReadSerializer(user_data).data
+        return Response({ 'user': data }
+        )
+
+
+
 
 class SignUp(generics.CreateAPIView):
-    # Override the authentication/permissions classes so this endpoint
+    # Override the authentication/permis sions classes so this endpoint
     # is not authenticated & we don't need any permissions to access it.
     authentication_classes = ()
     permission_classes = ()
@@ -81,11 +79,13 @@ class SignIn(generics.CreateAPIView):
 
     def post(self, request):
         creds = request.data
-        print(creds)
+        print(type(creds))
         # We can pass our  and password along with the request to the
         # `authenticate` method. If we had used the default user, we would need
         # to send the `username` instead of `email`.
-        user = authenticate(request, email=creds['email'], password=creds['password'])
+        user = authenticate(request, email=creds['credentials']['email'], password=creds['credentials']['password'])
+        # user = authenticate(request, email=creds['credentials']['email'], password=creds['credential']['password'])
+        print(user)
         # Is our user is successfully authenticated...
         if user is not None:
             # And they're active...
