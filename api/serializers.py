@@ -83,6 +83,8 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
+    owner_of_pet = serializers.StringRelatedField()
+    sitter = serializers.StringRelatedField()
     class Meta:
         model = Booking
         fields = ('id','start_date', 'end_date', 'sitter', 'owner_of_pet','sitter_id')

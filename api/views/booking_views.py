@@ -31,8 +31,9 @@ class Bookings(generics.ListCreateAPIView):
         # Add user to request data object
         print(request.data)
         user = request.user
-        booking_data = Booking(owner_of_pet = user )
-        booking = BookingSerializer(booking_data, data=request.data)
+        sitter = request.data.sitter
+        booking_data = Booking(owner_of_pet = user)
+        booking = BookingSerializer(booking_data, data=request.sitter)
         # If the review data is valid according to our serializer...
         if booking.is_valid():
             # Save the created review & send a response
@@ -53,7 +54,7 @@ class Bookings(generics.ListCreateAPIView):
         #     booking.save()
         #     return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
         # If the data is not valid, return a response with the errors
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        # return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=(IsAuthenticated,)
