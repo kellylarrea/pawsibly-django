@@ -3,8 +3,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
-
-from ..models.pet import Pet
 from ..models.booking import Booking
 from ..serializers import BookingSerializer
 
@@ -33,8 +31,7 @@ class Bookings(generics.ListCreateAPIView):
      
         user = request.user
         print('I AM DATA!!!!!',request.data)
-        # start_date = request.data.start_date
-        # end_date = request.data.end_date
+
 
         booking_data = Booking(pet_owner = user )
         booking = BookingSerializer(booking_data, data=request.data)
@@ -45,21 +42,6 @@ class Bookings(generics.ListCreateAPIView):
             return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
         # # If the data is not valid, return a response with the errors
         return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-        # request.data['booking']['owner'] = request.user.id
-        # # Serialize/create booking
-        # booking = BookingSerializer(data=request.data['booking'])
-        # # If the booking data is valid according to our serializer...
-        # if booking.is_valid():
-        #     # Save the created booking & send a response
-        #     booking.save()
-        #     return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
-        # If the data is not valid, return a response with the errors
-        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookingSerializer

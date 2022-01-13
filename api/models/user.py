@@ -68,11 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     zipcode = models.CharField(max_length = 5, default='12345')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    # sitter_reviews = models.ManyToManyField(
-    # Sitter,
-    # through="Review",
-    # through_fields=('sitter', 'pet_owner')
-    # )
+
    
 
     

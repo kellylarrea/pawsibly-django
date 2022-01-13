@@ -14,7 +14,7 @@ class Pet(models.Model):
     on_delete=models.CASCADE,
     related_name="pets_owned"
     )
-    primary_care_sitter = models.ForeignKey(Sitter, related_name='primary_pets', on_delete=models.CASCADE,null=True,blank=True)
+    
     # pet_bookings = models.ManyToManyField(
     # Sitter,
     # through=Booking,

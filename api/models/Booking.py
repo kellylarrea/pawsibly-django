@@ -26,6 +26,3 @@ class Booking(models.Model):
        
       }
 
-    # I think I helped with first issue right? /sttiter url error
-    # we have spent 15mins - $30
-    # 
