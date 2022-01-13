@@ -1,4 +1,4 @@
-from django.db.models import manager
+from django.db.models import fields, manager
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
 from api.models.booking import Booking
@@ -32,13 +32,13 @@ class PetSerializer(serializers.ModelSerializer):
         return Pet(**validated_data)
 
 class SitterSerializer(serializers.ModelSerializer):
-    primary_pets = PetSerializer(many=True)
     class Meta:
         model = Sitter
         fields = '__all__'
 
 class UserReadSerializer(serializers.ModelSerializer):
     pets_owned = PetSerializer(many=True)
+    mysitter = SitterSerializer()
    
     # customer = SitterSerializer(many=True)
     # pets_owned = PetSerializer(many=True, read_only=True)
@@ -98,18 +98,19 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    pet = PetSerializer()
+    pet_owner = get_user_model()
     sitter = SitterSerializer()
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields='__all__'
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    # client_reviews = UserSerializer()
+    sitter = SitterSerializer()
+    pet_owner = UserSerializer()
     class Meta:
         model = Review
-        fields = ('id','review', 'rating', 'pet_owner',)
+        fields ='__all__'
 
 
 class ReviewReadSerializer(serializers.ModelSerializer):

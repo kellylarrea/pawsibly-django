@@ -4,7 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
-
+from ..models.pet import Pet
 from ..models.booking import Booking
 from ..serializers import BookingSerializer
 
@@ -15,23 +15,26 @@ class Bookings(generics.ListCreateAPIView):
     def get(self, request):
         """Index request"""
         # Get all the bookings
-        # user.pet.id
-        bookings = Booking.objects.all()
-        print(bookings)
+        print(request.data)
+   
         # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(owner_of_pet_id=request.user.id)
+        bookings = Booking.objects.filter(pet_owner= request.user)
         # if owner.pet.id ===   
         # print(bookings)
         # Run the data through the serializer
         data = BookingSerializer(bookings, many=True).data
-        return Response({ 'bookings': data })
+        # return Response({ 'bookings': data })
+        return Response( status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Create request"""
-        # Add user to request data object
-        print(request.data)
+        # Add user to request data object\
+     
         user = request.user
-        booking_data = Booking(owner_of_pet = user )
+        # start_date = request.data.start_date
+        # end_date = request.data.end_date
+
+        booking_data = Booking(pet_owner = user )
         booking = BookingSerializer(booking_data, data=request.data)
         # If the review data is valid according to our serializer...
         if booking.is_valid():
@@ -40,7 +43,8 @@ class Bookings(generics.ListCreateAPIView):
             return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
         # # If the data is not valid, return a response with the errors
         return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
-       
+
+
 
 
 
@@ -56,6 +60,7 @@ class Bookings(generics.ListCreateAPIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes=()
     permission_classes=(IsAuthenticated,)
     def get(self, request, pk):
         """Show request"""
@@ -66,7 +71,7 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Run the data through the serializer so it's formatted
-        data = BookingReadSerializer(booking).data
+        data = BookingSerializer(booking).data
         return Response({ 'booking': data })
 
     def delete(self, request, pk):

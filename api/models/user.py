@@ -4,7 +4,7 @@ from django.db.models.fields import BooleanField
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.serializers import Serializer
-
+# from .sitter import Sitter
 
 
 class UserManager(BaseUserManager):
@@ -68,8 +68,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     zipcode = models.CharField(max_length = 5, default='12345')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    # sitter_reviews = models.ManyToManyField(
+    # Sitter,
+    # through="Review",
+    # through_fields=('sitter', 'pet_owner')
+    # )
    
-
 
     
 

@@ -8,12 +8,15 @@ class Sitter(models.Model):
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
     first_name = models.CharField(max_length=255, default='Jane')
     last_name = models.CharField(max_length=255, default='Doe')
-    email = models.EmailField(max_length=255, unique=True)
     zipcode = models.CharField(max_length = 5, default='12345')
     supersitter = models.BooleanField(null=True, blank=True)
     pricing = models.IntegerField(null=True)
     numReviews = models.IntegerField(default=0) 
     rating = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+   
+   
+
+    
  
 
     def __str__(self):
