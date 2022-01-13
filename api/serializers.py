@@ -2,6 +2,7 @@ from django.db.models import fields, manager
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
 
+from django.contrib.auth import get_user_model
 from .models.mango import Mango
 from .models.pet import Pet
 from .models.booking import Booking
@@ -78,7 +79,7 @@ class UserRegisterSerializer(serializers.Serializer):
     password_confirmation = serializers.CharField(required=True, write_only=True)
     zipcode = serializers.CharField(max_length = 5, required=True)
 
-      def validate(self, data):
+    def validate(self, data):
         # Ensure password & password_confirmation exist
         if not data['password'] or not data['password_confirmation']:
             raise serializers.ValidationError('Please include a password and password confirmation.')
@@ -98,13 +99,8 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-<<<<<<< HEAD
-    owner_of_pet = serializers.StringRelatedField()
-    sitter = serializers.StringRelatedField()
-=======
     # pet_owner = UserReadSerializer()
     # sitter = SitterReadSerializer()
->>>>>>> refs/remotes/origin/main
     class Meta:
         model = Booking
         fields= ('id','start_date', 'end_date','sitter', 'pet_owner_id')
