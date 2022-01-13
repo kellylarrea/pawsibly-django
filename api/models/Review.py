@@ -8,14 +8,14 @@ class Review(models.Model):
   review = models.CharField(max_length=500)
   rating = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(5)])
   created_at = models.DateTimeField(auto_now_add=True)
-  sitter = models.ForeignKey(
-      get_user_model(),
-      on_delete=models.CASCADE
-  )
-  pet_owner = models.ForeignKey(
-      get_user_model(), related_name="client_reviews",
-      on_delete=models.CASCADE
-  )
+#   sitter = models.ForeignKey(
+#       get_user_model(),
+#       on_delete=models.CASCADE
+#   )
+#   pet_owner = models.ForeignKey(
+#       get_user_model(), related_name="client_reviews",
+#       on_delete=models.CASCADE
+#   )
 
   def __str__(self):
       return self.review
