@@ -14,7 +14,6 @@ class Booking(models.Model):
   pet_owner = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True, blank=True)
   sitter = models.ForeignKey(Sitter, on_delete=models.CASCADE,null=True, blank=True)
  
-  
 
   def __str__(self):
     return f'{self.id}'

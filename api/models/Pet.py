@@ -20,7 +20,6 @@ class Pet(models.Model):
     # through=Booking,
     # through_fields=('pet', 'sitter')
     # )
-   
 
     def __str__(self):
         return self.name
