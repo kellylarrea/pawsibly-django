@@ -4,6 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
+
 from ..models.booking import Booking
 from ..serializers import BookingSerializer
 
@@ -16,18 +17,20 @@ class Bookings(generics.ListCreateAPIView):
         # Get all the bookings:
         # bookings = Booking.objects.all()
         # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(owner=request.user.id)
+        bookings = Booking.objects.filter(pet_owner=request.user.id)
         # Run the data through the serializer
         data = BookingSerializer(bookings, many=True).data
-        return Response({ 'bookings': data })
+        # return Response({ 'bookings': data })
+        return Response( status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Create request"""
-        # Add user to request data object
-        request.data['booking']['owner'] = request.user.id
-        # Serialize/create booking
-        booking = BookingSerializer(data=request.data['booking'])
-        # If the booking data is valid according to our serializer...
+        # Add user to request data object\
+        user = request.user
+        print('I AM DATA!!!!!',request.data
+        booking_data = Booking(pet_owner = user )
+        booking = BookingSerializer(booking_data, data=request.data)
+        # If the review data is valid according to our serializer...
         if booking.is_valid():
             # Save the created booking & send a response
             booking.save()
@@ -36,17 +39,18 @@ class Bookings(generics.ListCreateAPIView):
         return Response(booking.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BookingSerializer
     permission_classes=(IsAuthenticated,)
     def get(self, request, pk):
         """Show request"""
         # Locate the booking to show
         booking = get_object_or_404(Booking, pk=pk)
         # Only want to show user's booking?
-        if request.user != booking.owner:
+        if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Run the data through the serializer so it's formatted
-        data = BookingReadSerializer(booking).data
+        data = BookingSerializer(booking).data
         return Response({ 'booking': data })
 
     def delete(self, request, pk):

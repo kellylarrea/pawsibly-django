@@ -1,12 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.conf import settings
 from django.db.models.fields import BooleanField
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.serializers import Serializer
-
-
+# from .sitter import Sitter
 
 
 class UserManager(BaseUserManager):
@@ -65,18 +63,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     # As with any Django models, we need to define the fields
     # for the model with the type and options:
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255, default='John Doe')
+    first_name = models.CharField(max_length=255, default='John',null=False)
+    last_name = models.CharField(max_length=255, default='Doe')
     zipcode = models.CharField(max_length = 5, default='12345')
-    sitter = models.BooleanField(default=False)
-    supersitter = models.BooleanField(null=True)
-    pricing = models.IntegerField(null=True)
-    numReviews = models.IntegerField(default=0) 
-    rating = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
- 
-    
-    
+    # sitter_reviews = models.ManyToManyField(
+    # Sitter,
+    # through="Review",
+    # through_fields=('sitter', 'pet_owner')
+    # )
+   
+
     
 
 
@@ -94,9 +92,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Standard Python: We'll create a string representation so when
     # the class is output we'll get something meaningful.
-    def __str__(self):
-        """Return string representation of the user"""
-        return self.email
+    # def __str__(self):
+    #     """Return string representation of the user"""
+    #     return self.email
 
         
 

@@ -1,20 +1,19 @@
-from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user, get_user_model
+from django.db import models 
+from django.db.models.fields import related
+from .sitter import Sitter
+
+
+
+
 
 # Create your models here.
 class Booking(models.Model):
-  # define fields
-  # https://docs.djangoproject.com/en/3.0/ref/models/fields/
-  start_date = models.DateTimeField()  
-  end_date = models.DateTimeField()
-  # owner_pet = models.ForeignKey("Pet", related_name = "pet_booking", on_delete=models.CASCADE)
-  owner_of_pet = models.ForeignKey(
-      get_user_model(),
-      on_delete=models.CASCADE, blank=True,null=True
-  )
-  sitter = models.ForeignKey("User",related_name="sitter_bookings", on_delete=models.CASCADE)
+  start_date = models.DateTimeField(unique_for_date="start_date")
+  end_date = models.DateTimeField(unique_for_date="end_date")
+  pet_owner = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True, blank=True)
+  sitter = models.ForeignKey(Sitter, on_delete=models.CASCADE,null=True, blank=True)
  
-  
 
   def __str__(self):
     return f'{self.id}'
@@ -23,5 +22,9 @@ class Booking(models.Model):
     return {
         'start_date': self.start_date,
         'end_data': self.end_date,
-        'sitter': self.sitter
+       
       }
+
+    # I think I helped with first issue right? /sttiter url error
+    # we have spent 15mins - $30
+    # 

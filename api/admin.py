@@ -6,6 +6,7 @@ from .models.mango import Mango
 from .models.pet import Pet
 from .models.review import Review
 from .models.booking import Booking
+from .models.sitter import Sitter
 
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
@@ -46,3 +47,4 @@ admin.site.register(Mango)
 admin.site.register(Pet)
 admin.site.register(Review)
 admin.site.register(Booking)
+admin.site.register(Sitter)

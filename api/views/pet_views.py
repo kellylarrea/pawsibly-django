@@ -22,7 +22,7 @@ class Pets(generics.ListCreateAPIView):
         return Response({ 'pets': data })
 
     def post(self, request):
-    
+        
         pet_user = request.user
         pet_data = Pet(pet_owner = pet_user)
         pet = PetSerializer(pet_data, data=request.data)
@@ -53,7 +53,6 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, pk):
         """Delete request"""
         # Locate pet to delete
-
         pet = get_object_or_404(Pet, pk=pk)
         # Check the pet's owner against the user making this request
         if request.user != pet.pet_owner:

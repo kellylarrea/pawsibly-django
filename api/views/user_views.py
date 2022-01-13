@@ -10,7 +10,7 @@ from django.contrib.auth import get_user, authenticate, login, logout
 from ..models.user import User
 from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer, UserReadSerializer
 
-class Sitters(generics.ListCreateAPIView):
+class Users(generics.ListCreateAPIView):
     # permission_classes=(IsAuthenticated,) 
     # serializer_class = UserSerializer
     authentication_classes = ()
@@ -39,7 +39,7 @@ class Profile(generics.ListCreateAPIView):
         return Response({ 'user': data }
         )
 
-class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=()
     serializer_class = UserReadSerializer
     def get(self, request, pk):
