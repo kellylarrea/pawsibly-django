@@ -18,13 +18,11 @@ class Pet(models.Model):
     # through=Booking,
     # through_fields=('owner_pet','sitter')
     # )
-
     # booking_pet = models.ManyToManyField(
     # User,
     # through=Booking,
     # through_fields=('owner_pet','sitter')
     # )
-
 
     def __str__(self):
         return self.name

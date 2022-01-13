@@ -109,7 +109,6 @@ class SignIn(generics.CreateAPIView):
         # `authenticate` method. If we had used the default user, we would need
         # to send the `username` instead of `email`.
         user = authenticate(request, email=creds['credentials']['email'], password=creds['credentials']['password'])
-   
 
         # Is our user is successfully authenticated...
         if user is not None:

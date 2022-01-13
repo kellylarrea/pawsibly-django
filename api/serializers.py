@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
-
-
 from .models.mango import Mango
 from .models.pet import Pet
 from .models.booking import Booking
@@ -15,7 +13,6 @@ class MangoSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'color', 'ripe', 'owner')
 
 class PetSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Pet
         fields  = ('id', 'name', 'pet_owner')
@@ -47,13 +44,12 @@ class UserSerializer(serializers.ModelSerializer):
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
-
         fields = ('id', 'email', 'password')
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
 
     # This create method will be used for model creation
-    def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
+    # def create(self, validated_data):
+        # return get_user_model().objects.create_user(**validated_data)
 
 class UserRegisterSerializer(serializers.Serializer):
     # Require email, password, and password_confirmation for sign up
@@ -61,8 +57,6 @@ class UserRegisterSerializer(serializers.Serializer):
     password = serializers.CharField(required=True)
     password_confirmation = serializers.CharField(required=True, write_only=True)
     zipcode = serializers.CharField(max_length = 5, required=True)
-    
-
 
     def validate(self, data):
         # Ensure password & password_confirmation exist
