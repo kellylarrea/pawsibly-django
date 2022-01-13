@@ -1,8 +1,10 @@
 from django.db import models
 from django.db.models.fields import related 
 from django.contrib.auth import get_user_model
+from .sitter import Sitter
 from .booking import Booking
-from .user import User
+
+
 
 
 class Pet(models.Model):
@@ -12,19 +14,12 @@ class Pet(models.Model):
     on_delete=models.CASCADE,
     related_name="pets_owned"
     )
-    pet_sitter = models.ForeignKey(User, related_name='client_pet', on_delete=models.CASCADE,blank=True, null=True)
-    # booking_pet = models.ManyToManyField(
-    # User,
+    primary_care_sitter = models.ForeignKey(Sitter, related_name='primary_pets', on_delete=models.CASCADE,null=True,blank=True)
+    # pet_bookings = models.ManyToManyField(
+    # Sitter,
     # through=Booking,
-    # through_fields=('owner_pet','sitter')
+    # through_fields=('pet', 'sitter')
     # )
-
-    # booking_pet = models.ManyToManyField(
-    # User,
-    # through=Booking,
-    # through_fields=('owner_pet','sitter')
-    # )
-
 
     def __str__(self):
         return self.name

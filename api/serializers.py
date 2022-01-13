@@ -1,12 +1,12 @@
-from django.contrib.auth import get_user_model
+from django.db.models import fields, manager
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
-
 
 from .models.mango import Mango
 from .models.pet import Pet
 from .models.booking import Booking
 from .models.review import Review
+from .models.sitter import Sitter
 
 
 class MangoSerializer(serializers.ModelSerializer):
@@ -15,13 +15,29 @@ class MangoSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'color', 'ripe', 'owner')
 
 class PetSerializer(serializers.ModelSerializer):
-
+    pet_owner = serializers.StringRelatedField()
     class Meta:
         model = Pet
         fields  = ('id', 'name', 'pet_owner')
 
     def create(self, validated_data):
+        # owner_data = validated_data.pop('pet_owner', None)
+        # if owner_data:
+        #     owner = User.objects.get(**owner_data)
+        #     validated_data['pet_owner'] = owner
+        # return Pet.objects.create(**validated_data)
+
         return Pet(**validated_data)
+
+class SitterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sitter
+        fields = '__all__'
+
+class SitterReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sitter
+        fields = ('id','first_name')
 
 class UserReadSerializer(serializers.ModelSerializer):
     pets_owned = PetSerializer(many=True)
@@ -47,13 +63,13 @@ class UserSerializer(serializers.ModelSerializer):
         # get_user_model will get the user model (this is required)
         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
-
         fields = ('id', 'email', 'password')
-        extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
+        extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } ,'id':{'read_only:False'} }
+
 
     # This create method will be used for model creation
-    def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
+    # def create(self, validated_data):
+        # return get_user_model().objects.create_user(**validated_data)
 
 class UserRegisterSerializer(serializers.Serializer):
     # Require email, password, and password_confirmation for sign up
@@ -61,10 +77,8 @@ class UserRegisterSerializer(serializers.Serializer):
     password = serializers.CharField(required=True)
     password_confirmation = serializers.CharField(required=True, write_only=True)
     zipcode = serializers.CharField(max_length = 5, required=True)
-    
 
-
-    def validate(self, data):
+      def validate(self, data):
         # Ensure password & password_confirmation exist
         if not data['password'] or not data['password_confirmation']:
             raise serializers.ValidationError('Please include a password and password confirmation.')
@@ -82,19 +96,26 @@ class ChangePasswordSerializer(serializers.Serializer):
     new = serializers.CharField(required=True)
 
 
+
 class BookingSerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
     owner_of_pet = serializers.StringRelatedField()
     sitter = serializers.StringRelatedField()
+=======
+    # pet_owner = UserReadSerializer()
+    # sitter = SitterReadSerializer()
+>>>>>>> refs/remotes/origin/main
     class Meta:
         model = Booking
-        fields = ('id','start_date', 'end_date', 'sitter', 'owner_of_pet','sitter_id')
+        fields= ('id','start_date', 'end_date','sitter', 'pet_owner_id')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    # client_reviews = UserSerializer()
+    sitter = SitterSerializer()
+    pet_owner = UserSerializer()
     class Meta:
         model = Review
-        fields = ('id','review', 'rating', 'pet_owner', 'sitter')
+        fields ='__all__'
 
 
 class ReviewReadSerializer(serializers.ModelSerializer):

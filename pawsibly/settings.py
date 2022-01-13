@@ -15,6 +15,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import sys
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# adding config
+cloudinary.config( 
+  cloud_name = "domrxogjn", 
+  api_key = "577365745852932", 
+  api_secret = "ObtonRIJ6p-giirvdh0U8vTK26I" 
+)
 
 # .env config:
 from dotenv import load_dotenv, find_dotenv
@@ -78,6 +88,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'photos',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -175,4 +187,4 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Use the custom user model as the auth user for the admin view
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL = 'api.user'
