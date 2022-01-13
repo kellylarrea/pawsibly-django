@@ -36,10 +36,13 @@ class SitterSerializer(serializers.ModelSerializer):
         model = Sitter
         fields = '__all__'
 
+class SitterReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sitter
+        fields = ('id','first_name')
+
 class UserReadSerializer(serializers.ModelSerializer):
     pets_owned = PetSerializer(many=True)
-    mysitter = SitterSerializer()
-   
     # customer = SitterSerializer(many=True)
     # pets_owned = PetSerializer(many=True, read_only=True)
     # This model serializer will be used for User creation
@@ -98,11 +101,11 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    pet_owner = get_user_model()
-    sitter = SitterSerializer()
+    # pet_owner = UserReadSerializer()
+    # sitter = SitterReadSerializer()
     class Meta:
         model = Booking
-        fields='__all__'
+        fields= ('id','start_date', 'end_date','sitter', 'pet_owner_id')
 
 
 class ReviewSerializer(serializers.ModelSerializer):

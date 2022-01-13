@@ -24,17 +24,17 @@ class Sitters(generics.ListCreateAPIView):
         print("get3")
         return Response({ 'sitters': data })
 
-#     def post(self, request):
+    def post(self, request):
         
-#         sitter_user = request.user
-#         sitter_data = Sitter(pet_owner = sitter_user)
-#         sitter = SitterSerializer(sitter_data, data=request.data)
-#         if sitter.is_valid():
-#             # Save the created mango & send a response
-#             sitter.save()
-#             return Response(sitter.data, status=status.HTTP_201_CREATED)
-#         # If the data is not valid, return a response with the errors
-#         return Response(sitter.errors, status=status.HTTP_400_BAD_REQUEST)
+        sitter_user = request.user
+        sitter_data = Sitter(pet_owner = sitter_user)
+        sitter = SitterSerializer(sitter_data, data=request.data)
+        if sitter.is_valid():
+            # Save the created mango & send a response
+            sitter.save()
+            return Response(sitter.data, status=status.HTTP_201_CREATED)
+        # If the data is not valid, return a response with the errors
+        return Response(sitter.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SitterSerializer

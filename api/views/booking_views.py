@@ -15,8 +15,9 @@ class Bookings(generics.ListCreateAPIView):
     def get(self, request):
         """Index request"""
         # Get all the bookings
+    
         print(request.data)
-   
+        bookings = Booking.objects.all()
         # Filter the bookings by owner, so you can only see the user's bookings
         bookings = Booking.objects.filter(pet_owner= request.user)
         # if owner.pet.id ===   
@@ -31,6 +32,7 @@ class Bookings(generics.ListCreateAPIView):
         # Add user to request data object\
      
         user = request.user
+        print('I AM DATA!!!!!',request.data)
         # start_date = request.data.start_date
         # end_date = request.data.end_date
 
@@ -60,14 +62,14 @@ class Bookings(generics.ListCreateAPIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes=()
+    serializer_class = BookingSerializer
     permission_classes=(IsAuthenticated,)
     def get(self, request, pk):
         """Show request"""
         # Locate the booking to show
         booking = get_object_or_404(Booking, pk=pk)
         # Only want to show user's booking?
-        if request.user != booking.owner:
+        if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Run the data through the serializer so it's formatted
