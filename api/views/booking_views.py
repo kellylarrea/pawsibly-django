@@ -5,7 +5,7 @@ from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
 from ..models.booking import Booking
-from ..serializers import BookingSerializer, BookingReadSerializer
+from ..serializers import BookingSerializer
 
 # Create your views here.
 class Bookings(generics.ListCreateAPIView):
@@ -18,7 +18,7 @@ class Bookings(generics.ListCreateAPIView):
         # Filter the bookings by owner, so you can only see the user's bookings
         bookings = Booking.objects.filter(owner=request.user.id)
         # Run the data through the serializer
-        data = BookingReadSerializer(bookings, many=True).data
+        data = BookingSerializer(bookings, many=True).data
         return Response({ 'bookings': data })
 
     def post(self, request):
