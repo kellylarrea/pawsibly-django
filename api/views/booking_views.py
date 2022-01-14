@@ -57,7 +57,7 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         # Locate a booking to delete
         booking = get_object_or_404(Booking, pk=pk)
         # Check the booking's owner against the user making this request
-        if request.user != booking.owner:
+        if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
         # Only delete if the user owns the booking
         booking.delete()
@@ -69,7 +69,7 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         # get_object_or_404 returns a object representation of our Booking
         pet = get_object_or_404(Pet, pk=pk)
         # Check the pets's owner against the user making this request
-        if request.user != booking.owner:
+        if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Ensure the owner field is set to the current user's ID

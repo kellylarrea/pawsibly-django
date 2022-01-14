@@ -72,7 +72,7 @@ class PetDetail(generics.RetrieveUpdateDestroyAPIView):
 
         # Ensure the owner field is set to the current user's ID
         # Validate updates with serializer
-        ms = PetSerializer(pet, data=request.data['pet'], partial=True) 
+        ms = PetSerializer(pet, data=request.data.name, partial=True) 
         if ms.is_valid():
             # Save & send a 204 no content
             ms.save()

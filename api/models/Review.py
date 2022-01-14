@@ -7,9 +7,9 @@ class Review(models.Model):
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
   review = models.CharField(max_length=500)
   rating = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(5)])
-  created_at = models.DateTimeField(auto_now_add=True)
   sitter = models.ForeignKey('Sitter',on_delete=models.CASCADE,null=True,blank=True)
   pet_owner = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
+
 
   def __str__(self):
       return self.review
@@ -19,5 +19,5 @@ class Review(models.Model):
     return {
         'review': self.review,
         'rating': self.rating,
-        'created_at': self.created_at
+        
     }

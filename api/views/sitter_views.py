@@ -38,18 +38,18 @@ class Sitters(generics.ListCreateAPIView):
 
 class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SitterSerializer
-    permission_classes=(IsAuthenticated,)
+    permission_classes=()
     def get(self, request, pk):
         """Show request"""
         # Locate the sitter to show
         sitter = get_object_or_404(Sitter, pk=pk)
         # Only want to show hired sitter?
-        if request.user != sitter.pet_owner:
-            raise PermissionDenied('Unauthorized, you did not hire this sitter')
+        # if request.user != sitter.pet_owner:
+        #     raise PermissionDenied('Unauthorized, you did not hire this sitter')
 
 #         # Run the data through the serializer so it's formatted
-#         data = SitterSerializer(sitter).data
-#         return Response({ 'sitter': data })
+        data = SitterSerializer(sitter).data
+        return Response({ 'sitter': data })
 
 #     def delete(self, request, pk):
 #         """Delete request"""
