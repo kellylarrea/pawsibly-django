@@ -8,7 +8,7 @@ from .booking import Booking
 
 
 class Pet(models.Model):
-    name = models.CharField(null =True,max_length=100)
+    name = models.CharField(null=True, max_length=100)
     pet_owner = models.ForeignKey(
     get_user_model(),
     on_delete=models.CASCADE,

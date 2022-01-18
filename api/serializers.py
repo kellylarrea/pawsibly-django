@@ -3,17 +3,12 @@ from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
 
 from django.contrib.auth import get_user_model
-from .models.mango import Mango
 from .models.pet import Pet
 from .models.booking import Booking
 from .models.review import Review
 from .models.sitter import Sitter
 
 
-class MangoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Mango
-        fields = ('id', 'name', 'color', 'ripe', 'owner')
 
 class PetSerializer(serializers.ModelSerializer):
     pet_owner = serializers.StringRelatedField()
@@ -103,12 +98,12 @@ class BookingSerializer(serializers.ModelSerializer):
     # sitter = SitterReadSerializer()
     class Meta:
         model = Booking
-        fields= ('id','start_date', 'end_date','sitter', 'pet_owner_id')
+        fields= '__all__'
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    sitter = SitterSerializer()
-    pet_owner = UserSerializer()
+    # sitter = SitterSerializer()
+    # pet_owner = UserSerializer()
     class Meta:
         model = Review
         fields ='__all__'

@@ -5,6 +5,7 @@ from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 from ..serializers import BookingSerializer
 from ..models.booking import Booking
+from ..models.sitter import Sitter
 
 
 # Create your views here.
@@ -13,29 +14,40 @@ class Bookings(generics.ListCreateAPIView):
     serializer_class = BookingSerializer
     def get(self, request):
         """Index request"""
-        # Get all the bookings:
-        # bookings = Booking.objects.all()
-        # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(pet_owner=request.user.id)
-        # Run the data through the serializer
-        data = BookingSerializer(bookings, many=True).data
-        # return Response({ 'bookings': data })
-        return Response( status=status.HTTP_400_BAD_REQUEST)
-
-    def post(self, request):
-        """Create request"""
-        # Add user to request data object\
-        user = request.user
-        print('I AM DATA!!!!!',request.data)
-        booking_data = Booking(pet_owner = user )
+        # # Get all the bookings:
+        # # bookings = Booking.objects.all()
+        # # Filter the bookings by owner, so you can only see the user's bookings
+        # bookings = Booking.objects.filter(pet_owner=request.user)
+        # # Run the data through the serializer
+        # data = BookingSerializer(bookings, many=True).data
+        # # return Response({ 'bookings': data })
+        # return Response( status=status.HTTP_400_BAD_REQUEST)
+        booking_user = request.user
+        print(request.data)
+        booking_data = Booking(pet_owner = booking_user)
         booking = BookingSerializer(booking_data, data=request.data)
         # If the review data is valid according to our serializer...
         if booking.is_valid():
-            # Save the created booking & send a response
-            booking.save()
+            # Save the created review & send a response
+            r = booking.save()
             return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
         # # If the data is not valid, return a response with the errors
         return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
+
+    # def post(self, request):
+    #     """Create request"""
+    #     # Add user to request data object\
+    #     user = request.user
+    #     print('I AM DATA!!!!!',request.data)
+    #     booking_data = Booking(pet_owner = user )
+    #     booking = BookingSerializer(booking_data, data=request.data)
+    #     # If the review data is valid according to our serializer...
+    #     if booking.is_valid():
+    #         # Save the created booking & send a response
+    #         booking.save()
+    #         return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
+    #     # # If the data is not valid, return a response with the errors
+    #     return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookingSerializer
@@ -51,6 +63,22 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         # Run the data through the serializer so it's formatted
         data = BookingSerializer(booking).data
         return Response({ 'booking': data })
+
+    def post(self, request, pk):
+        """Create request"""
+        # Add user to request data object\
+        sitter = get_object_or_404(Sitter, pk=pk)
+        booking_user = request.user
+        print('I AM DATA!!!!!',request.data)
+        # booking_data = Booking(pet_owner = user )
+        booking = BookingSerializer(sitter, data=request.data)
+        # If the review data is valid according to our serializer...
+        if booking.is_valid():
+            # Save the created booking & send a response
+            b = booking.save()
+            return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
+        # # If the data is not valid, return a response with the errors
+        return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         """Delete request"""

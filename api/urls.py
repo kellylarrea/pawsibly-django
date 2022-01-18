@@ -1,5 +1,4 @@
 from django.urls import path
-from .views.mango_views import Mangos, MangoDetail
 
 from .views.pet_views import Pets, PetDetail
 from .views.sitter_views import Sitters, SitterDetail
@@ -19,10 +18,8 @@ urlpatterns = [
     path('users/<int:pk>/',PetDetail.as_view(), name='pet_detail'),
     path('sitters/<int:pk>/',SitterDetail.as_view(), name='sitter_detail'),
     path('bookings',Bookings.as_view(), name='bookings'),
-    path('bookings/<int:pk>/', BookingsDetail.as_view(), name='bookings_detail'),
+    path('bookings/<int:pk>', BookingsDetail.as_view(), name='bookings_detail'),
     path('pets', Pets.as_view(), name='pets'),
-    path('mangos/', Mangos.as_view(), name='mangos'),
-    path('mangos/<int:pk>/', MangoDetail.as_view(), name='mango_detail'),
     path('pets/', Pets.as_view(), name='pets'),
     path('pets/<int:pk>', PetDetail.as_view(), name='pet_detail'),
     path('reviews', Reviews.as_view(), name='reviews'),
