@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -10,10 +9,10 @@ class Sitter(models.Model):
     last_name = models.CharField(max_length=255, default='Doe')
     zipcode = models.CharField(max_length = 5, default='12345')
     supersitter = models.BooleanField(null=True, blank=True)
-    pricing = models.IntegerField(null=True)
-    numReviews = models.IntegerField(default=0) 
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    numReviews = models.IntegerField(null=True, blank=True, default=0)
     rating = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-   
+  
    
 
     

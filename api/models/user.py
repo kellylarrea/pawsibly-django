@@ -59,9 +59,7 @@ class UserManager(BaseUserManager):
 
 # Inherit from AbstractBaseUser and PermissionsMixin:
 class User(AbstractBaseUser, PermissionsMixin):
-    """Database model for users"""
-    # As with any Django models, we need to define the fields
-    # for the model with the type and options:
+ 
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255, default='John',null=False)
     last_name = models.CharField(max_length=255, default='Doe')

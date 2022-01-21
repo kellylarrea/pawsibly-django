@@ -4,7 +4,9 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 from ..serializers import BookingSerializer
-from ..models import Booking 
+from ..models.booking import Booking
+
+
 
 # Create your views here.
 class Bookings(generics.ListCreateAPIView):
@@ -15,11 +17,11 @@ class Bookings(generics.ListCreateAPIView):
         # Get all the bookings:
         # bookings = Booking.objects.all()
         # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(pet_owner=request.user.id)
+        bookings = Booking.objects.filter(pet_owner = request.user)
         # Run the data through the serializer
         data = BookingSerializer(bookings, many=True).data
         # return Response({ 'bookings': data })
-        return Response( status=status.HTTP_400_BAD_REQUEST)
+        return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Create request"""
@@ -44,8 +46,8 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         # Locate the booking to show
         booking = get_object_or_404(Booking, pk=pk)
         # Only want to show user's booking?
-        if request.user != booking.pet_owner:
-            raise PermissionDenied('Unauthorized, you do not own this booking')
+        # if request.user != booking.pet_owner:
+        #     raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Run the data through the serializer so it's formatted
         data = BookingSerializer(booking).data
@@ -56,7 +58,7 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         # Locate a booking to delete
         booking = get_object_or_404(Booking, pk=pk)
         # Check the booking's owner against the user making this request
-        if request.user != booking.owner:
+        if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
         # Only delete if the user owns the booking
         booking.delete()
@@ -66,13 +68,13 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         """Update Request"""
         # Locate Booking
         # get_object_or_404 returns a object representation of our Booking
-        pet = get_object_or_404(Pet, pk=pk)
+        booking = get_object_or_404(Booking, pk=pk)
         # Check the pets's owner against the user making this request
-        if request.user != booking.owner:
+        if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Ensure the owner field is set to the current user's ID
-        request.data['booking']['owner'] = request.user.id
+        request.data['booking']['pet_owner'] = request.user.id
         # Validate updates with serializer
         data = BookingSerializer(booking, data=request.data['booking'], partial=True)
         if data.is_valid():

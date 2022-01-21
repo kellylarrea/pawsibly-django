@@ -1,18 +1,13 @@
 from django.db.models import fields, manager
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
+
 from django.contrib.auth import get_user_model
-from .models.mango import Mango
 from .models.pet import Pet
 from .models.booking import Booking
 from .models.review import Review
 from .models.sitter import Sitter
 
-
-class MangoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Mango
-        fields = ('id', 'name', 'color', 'ripe', 'owner')
 
 class PetSerializer(serializers.ModelSerializer):
     pet_owner = serializers.StringRelatedField()
@@ -68,8 +63,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
     # This create method will be used for model creation
-    # def create(self, validated_data):
-        # return get_user_model().objects.create_user(**validated_data)
+    def create(self, validated_data):
+        return get_user_model().objects.create_user(**validated_data)
 
 class UserRegisterSerializer(serializers.Serializer):
     # Require email, password, and password_confirmation for sign up
@@ -106,14 +101,9 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    sitter = SitterSerializer()
-    pet_owner = UserSerializer()
     class Meta:
         model = Review
-        fields ='__all__'
-
-
-class ReviewReadSerializer(serializers.ModelSerializer):
-     class Meta:
-        model = Review
         fields = '__all__'
+
+
+
