@@ -23,7 +23,7 @@ class Reviews(generics.ListCreateAPIView):
         # Get all the reviews:
         # reviews = Review.objects.all()
         # Filter the reviews by owner, so you can only see your owned reviews
-        reviews = Review.objects.filter(sitter=pk)
+        reviews = Review.objects.filter(pet_owner=request.user)
         # Run the data through the serializer
         data = ReviewSerializer(reviews, many=True).data
         return Response({'reviews': data})
