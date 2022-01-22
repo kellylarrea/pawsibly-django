@@ -95,7 +95,9 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     # pet_owner = UserReadSerializer()
-    # sitter = SitterReadSerializer()
+    # sitter = SitterSerializer()
+    sitter = serializers.StringRelatedField()
+    # sitter_booked = SitterSerializer()
     class Meta:
         model = Booking
         fields= '__all__'

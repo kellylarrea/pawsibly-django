@@ -9,10 +9,10 @@ from .sitter import Sitter
 
 # Create your models here.
 class Booking(models.Model):
-  start_date = models.DateTimeField(unique_for_date="start_date")
-  end_date = models.DateTimeField(unique_for_date="end_date")
+  start_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+  end_date = models.DateTimeField(auto_now=False, auto_now_add=False)
   pet_owner = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True, blank=True)
-  sitter = models.ForeignKey(Sitter, on_delete=models.CASCADE,null=True, blank=True)
+  sitter = models.ForeignKey('Sitter', on_delete=models.CASCADE,null=True, related_name="sitter_booked", blank=True)
  
 
   def __str__(self):
