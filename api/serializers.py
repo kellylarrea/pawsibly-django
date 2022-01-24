@@ -25,6 +25,7 @@ class PetSerializer(serializers.ModelSerializer):
         return Pet(**validated_data)
 
 class SitterSerializer(serializers.ModelSerializer):
+  
     class Meta:
         model = Sitter
         fields = '__all__'
@@ -93,6 +94,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
+    
     # pet_owner = UserReadSerializer()
     # sitter = SitterReadSerializer()
     class Meta:
@@ -101,6 +103,15 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    sitter = serializers.StringRelatedField()
+    pet_owner = serializers.StringRelatedField()
+    pet_owner = UserReadSerializer()
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+
+class ReviewReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'

@@ -8,7 +8,7 @@ from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 from ..models.sitter import Sitter
 from ..models.review import Review
-from ..serializers import ReviewSerializer
+from ..serializers import ReviewSerializer,ReviewReadSerializer
 from rest_framework.decorators import api_view, permission_classes
 
 # Create your views here.
@@ -18,7 +18,7 @@ class Reviews(generics.ListCreateAPIView):
     permission_classes = ()
     serializer_class = ReviewSerializer
 
-    def get(self, request, pk):
+    def get(self, request):
         """Index request"""
         # Get all the reviews:
         # reviews = Review.objects.all()
@@ -27,25 +27,26 @@ class Reviews(generics.ListCreateAPIView):
         # Run the data through the serializer
         data = ReviewSerializer(reviews, many=True).data
         return Response({'reviews': data})
+    
+    def post(self, request):
+        print(request.data)
+        """Create request"""
+        print(request.data)
+        # Add user to request data object
+        # Serialize/create review
+    
+
+        review = ReviewReadSerializer(data=request.data)
+        # If the review data is valid according to our serializer...
+        if review.is_valid():
+            # Save the created review & send a response
+            r = review.save()
+            return Response({ 'review': review.data }, status=status.HTTP_201_CREATED)
+        # # If the data is not valid, return a response with the errors
+        return Response(review.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-    #  def post(self, request, pk):
-    #     """Create request"""
-    #     print(request.data)
-    #     # Add user to request data object
-    #     # Serialize/create review
-    #     grabsitter = get_object_or_404(Sitter, pk=pk)
-    #     review_user = request.user
-    #     pet_owner = Review(pet_owner = review_user)
-    #     sitter = Review(sitter = grabsitter)
-    #     review = ReviewSerializer(pet_owner,sitter, data=request.data,)
-    #     # If the review data is valid according to our serializer...
-    #     if review.is_valid():
-    #         # Save the created review & send a response
-    #         r = review.save()
-    #         return Response({ 'review': review.data }, status=status.HTTP_201_CREATED)
-    #     # # If the data is not valid, return a response with the errors
-    #     return Response(review.data, status=status.HTTP_400_BAD_REQUEST)
+    
 class ReviewsDetail(generics.ListCreateAPIView):
     permission_classes = ()
     serializer_class = ReviewSerializer
