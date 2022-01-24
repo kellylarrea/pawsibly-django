@@ -26,10 +26,8 @@ class Bookings(generics.ListCreateAPIView):
     def post(self, request):
         """Create request"""
         # Add user to request data object\
-        user = request.user
         print('I AM DATA!!!!!',request.data)
-        booking_data = Booking(pet_owner = user )
-        booking = BookingSerializer(booking_data, data=request.data)
+        booking = BookingSerializer(data=request.data)
         # If the review data is valid according to our serializer...
         if booking.is_valid():
             # Save the created booking & send a response

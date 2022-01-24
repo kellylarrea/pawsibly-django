@@ -99,7 +99,7 @@ class BookingSerializer(serializers.ModelSerializer):
     # sitter = SitterReadSerializer()
     class Meta:
         model = Booking
-        fields= ('id','start_date', 'end_date','sitter', 'pet_owner_id')
+        fields= ('id','start_date', 'end_date','sitter', 'pet_owner')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
