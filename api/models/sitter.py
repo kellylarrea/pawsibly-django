@@ -14,7 +14,7 @@ class Sitter(models.Model):
     numReviews = models.IntegerField(null=True, blank=True, default=0)
     rating = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     description = models.TextField(null=True, blank=True) 
-  
+ 
    
 
     
