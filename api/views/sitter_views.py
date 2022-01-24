@@ -1,9 +1,6 @@
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user, get_user_model
 from ..models.sitter import Sitter
 from ..serializers import SitterSerializer
 
@@ -26,8 +23,8 @@ class Sitters(generics.ListCreateAPIView):
 
     def post(self, request):
         
-        sitter_user = request.user
-        sitter_data = Sitter(pet_owner = sitter_user)
+        user = request.user
+        sitter_data = Sitter(owner = user)
         sitter = SitterSerializer(sitter_data, data=request.data)
         if sitter.is_valid():
             # Save the created mango & send a response
@@ -37,8 +34,8 @@ class Sitters(generics.ListCreateAPIView):
         return Response(sitter.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = SitterSerializer
     permission_classes=()
+    serializer_class = SitterSerializer
     def get(self, request, pk):
         """Show request"""
         # Locate the sitter to show
@@ -46,8 +43,6 @@ class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
         # Only want to show hired sitter?
         # if request.user != sitter.pet_owner:
         #     raise PermissionDenied('Unauthorized, you did not hire this sitter')
-
-#         # Run the data through the serializer so it's formatted
         data = SitterSerializer(sitter).data
         return Response({ 'sitter': data })
 

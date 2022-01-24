@@ -5,7 +5,7 @@ from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 from ..serializers import BookingSerializer
 from ..models.booking import Booking
-from ..models.sitter import Sitter
+
 
 
 # Create your views here.
@@ -34,20 +34,18 @@ class Bookings(generics.ListCreateAPIView):
         # # # If the data is not valid, return a response with the errors
         # return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
 
-    # def post(self, request):
-    #     """Create request"""
-    #     # Add user to request data object\
-    #     user = request.user
-    #     print('I AM DATA!!!!!',request.data)
-    #     booking_data = Booking(pet_owner = user )
-    #     booking = BookingSerializer(booking_data, data=request.data)
-    #     # If the review data is valid according to our serializer...
-    #     if booking.is_valid():
-    #         # Save the created booking & send a response
-    #         booking.save()
-    #         return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
-    #     # # If the data is not valid, return a response with the errors
-    #     return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        """Create request"""
+        # Add user to request data object\
+        print('I AM DATA!!!!!',request.data)
+        booking = BookingSerializer(data=request.data)
+        # If the review data is valid according to our serializer...
+        if booking.is_valid():
+            # Save the created booking & send a response
+            booking.save()
+            return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
+        # # If the data is not valid, return a response with the errors
+        return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
 
 class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookingSerializer
@@ -57,28 +55,12 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         # Locate the booking to show
         booking = get_object_or_404(Booking, pk=pk)
         # Only want to show user's booking?
-        if request.user != booking.pet_owner:
-            raise PermissionDenied('Unauthorized, you do not own this booking')
+        # if request.user != booking.pet_owner:
+        #     raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Run the data through the serializer so it's formatted
         data = BookingSerializer(booking).data
         return Response({ 'booking': data })
-
-    def post(self, request, pk):
-        """Create request"""
-        # Add user to request data object\
-        sitter = get_object_or_404(Sitter, pk=pk)
-        booking_user = request.user
-        print('I AM DATA!!!!!',request.data)
-        # booking_data = Booking(pet_owner = user )
-        booking = BookingSerializer(sitter, data=request.data,)
-        # If the review data is valid according to our serializer...
-        if booking.is_valid():
-            # Save the created booking & send a response
-            b = booking.save()
-            return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
-        # # If the data is not valid, return a response with the errors
-        return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         """Delete request"""
@@ -95,13 +77,13 @@ class BookingsDetail(generics.RetrieveUpdateDestroyAPIView):
         """Update Request"""
         # Locate Booking
         # get_object_or_404 returns a object representation of our Booking
-        pet = get_object_or_404(Pet, pk=pk)
+        booking = get_object_or_404(Booking, pk=pk)
         # Check the pets's owner against the user making this request
         if request.user != booking.pet_owner:
             raise PermissionDenied('Unauthorized, you do not own this booking')
 
         # Ensure the owner field is set to the current user's ID
-        request.data['booking']['owner'] = request.user.id
+        request.data['booking']['pet_owner'] = request.user.id
         # Validate updates with serializer
         data = BookingSerializer(booking, data=request.data['booking'], partial=True)
         if data.is_valid():

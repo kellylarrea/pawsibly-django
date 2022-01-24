@@ -4,7 +4,8 @@ from .views.pet_views import Pets, PetDetail
 from .views.sitter_views import Sitters, SitterDetail
 from .views.user_views import SignUp, SignIn, SignOut, ChangePassword,  Profile
 from .views.booking_views import Bookings, BookingsDetail
-from .views.review_views import Reviews, ReviewsDetail
+from .views.review_views import Reviews,ReviewsDetail
+
 
 
 # from views.booking_views import Review
@@ -13,10 +14,8 @@ from .views.review_views import Reviews, ReviewsDetail
 urlpatterns = [
   	# Restful routing
     path('profile',Profile.as_view(), name='users'),
-    # path('users',Sitters.as_view(), name='users'),
+    path('sitters/<int:pk>',SitterDetail.as_view(), name='sitterdetail'),
     path('sitters',Sitters.as_view(), name='users'),
-    path('users/<int:pk>/',PetDetail.as_view(), name='pet_detail'),
-    path('sitters/<int:pk>/',SitterDetail.as_view(), name='sitter_detail'),
     path('bookings',Bookings.as_view(), name='bookings'),
     path('bookings/<int:pk>', BookingsDetail.as_view(), name='bookings_detail'),
     path('pets', Pets.as_view(), name='pets'),

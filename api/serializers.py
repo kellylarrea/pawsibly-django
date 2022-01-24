@@ -9,7 +9,6 @@ from .models.review import Review
 from .models.sitter import Sitter
 
 
-
 class PetSerializer(serializers.ModelSerializer):
     pet_owner = serializers.StringRelatedField()
     class Meta:
@@ -26,6 +25,7 @@ class PetSerializer(serializers.ModelSerializer):
         return Pet(**validated_data)
 
 class SitterSerializer(serializers.ModelSerializer):
+  
     class Meta:
         model = Sitter
         fields = '__all__'
@@ -64,8 +64,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
     # This create method will be used for model creation
-    # def create(self, validated_data):
-        # return get_user_model().objects.create_user(**validated_data)
+    def create(self, validated_data):
+        return get_user_model().objects.create_user(**validated_data)
 
 class UserRegisterSerializer(serializers.Serializer):
     # Require email, password, and password_confirmation for sign up
@@ -95,23 +95,26 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     # pet_owner = UserReadSerializer()
-    # sitter = SitterSerializer()
-    sitter = serializers.StringRelatedField()
-    # sitter_booked = SitterSerializer()
+    # sitter = SitterReadSerializer()
     class Meta:
         model = Booking
-        fields= '__all__'
+        fields= ('id','start_date', 'end_date','sitter', 'pet_owner')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    # sitter = SitterSerializer()
-    # pet_owner = UserSerializer()
+    sitter = serializers.StringRelatedField()
+    pet_owner = serializers.StringRelatedField()
+    pet_owner = UserReadSerializer()
+
     class Meta:
         model = Review
-        fields ='__all__'
+        fields = '__all__'
 
 
 class ReviewReadSerializer(serializers.ModelSerializer):
-     class Meta:
+    class Meta:
         model = Review
         fields = '__all__'
+
+
+
