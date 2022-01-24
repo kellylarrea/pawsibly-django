@@ -17,11 +17,11 @@ class Bookings(generics.ListCreateAPIView):
         # Get all the bookings:
         # bookings = Booking.objects.all()
         # Filter the bookings by owner, so you can only see the user's bookings
-        bookings = Booking.objects.filter(pet_owner = request.user)
+        bookings = Booking.objects.filter(pet_owner=request.user.id)
         # Run the data through the serializer
         data = BookingSerializer(bookings, many=True).data
-        # return Response({ 'bookings': data })
-        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        return Response({ 'bookings': data })
+        return Response( status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Create request"""
