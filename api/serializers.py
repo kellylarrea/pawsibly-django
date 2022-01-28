@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db.models import fields, manager
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
@@ -16,16 +17,9 @@ class PetSerializer(serializers.ModelSerializer):
         fields  = ('id', 'name', 'pet_owner', 'image')
 
     def create(self, validated_data):
-        # owner_data = validated_data.pop('pet_owner', None)
-        # if owner_data:
-        #     owner = User.objects.get(**owner_data)
-        #     validated_data['pet_owner'] = owner
-        # return Pet.objects.create(**validated_data)
-
         return Pet(**validated_data)
 
 class SitterSerializer(serializers.ModelSerializer):
-  
     class Meta:
         model = Sitter
         fields = '__all__'
@@ -35,21 +29,17 @@ class SitterReadSerializer(serializers.ModelSerializer):
         model = Sitter
         fields = ('id','first_name')
 
+class UserImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('id','image')
+
+
 class UserReadSerializer(serializers.ModelSerializer):
     pets_owned = PetSerializer(many=True)
-    # pets_owned = PetSerializer(many=True, read_only=True)
-    # This model serializer will be used for User creation
-    # The login serializer also inherits from this serializer
-    # in order to require certain data for login
     class Meta:
-        # get_user_model will get the user model (this is required)
-        # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
         model = get_user_model()
         fields = '__all__'
-    # This create method will be used for model creation
-    # def create(self, validated_data):
-        # return get_user_model().objects.create_user(**validated_data)
-
 
 class UserSerializer(serializers.ModelSerializer):
     # This model serializer will be used for User creation
@@ -61,8 +51,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ('id', 'email', 'password')
         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } ,'id':{'read_only:False'} }
-
-
     # This create method will be used for model creation
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
