@@ -11,6 +11,7 @@ from ..models.review import Review
 from ..serializers import ReviewSerializer,ReviewReadSerializer
 from rest_framework.decorators import api_view, permission_classes
 
+
 # Create your views here.
 
 
@@ -29,13 +30,7 @@ class Reviews(generics.ListCreateAPIView):
         return Response({'reviews': data})
     
     def post(self, request):
-        print(request.data)
         """Create request"""
-        print(request.data)
-        # Add user to request data object
-        # Serialize/create review
-    
-
         review = ReviewReadSerializer(data=request.data)
         # If the review data is valid according to our serializer...
         if review.is_valid():
@@ -44,8 +39,6 @@ class Reviews(generics.ListCreateAPIView):
             return Response({ 'review': review.data }, status=status.HTTP_201_CREATED)
         # # If the data is not valid, return a response with the errors
         return Response(review.data, status=status.HTTP_400_BAD_REQUEST)
-
-
     
 class ReviewsDetail(generics.ListCreateAPIView):
     permission_classes = ()

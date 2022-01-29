@@ -7,6 +7,7 @@ def upload_path(instance, filename):
     return '/'.join(['pets', str(instance.name), filename])
 
 class Pet(models.Model):
+
     name = models.CharField(null =True,max_length=100)
     image = models.ImageField(null=True, blank=True,upload_to='images/')
     pet_owner = models.ForeignKey(

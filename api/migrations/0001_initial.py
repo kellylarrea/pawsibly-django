@@ -42,9 +42,10 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(default='Doe', max_length=255)),
                 ('zipcode', models.CharField(default='12345', max_length=5)),
                 ('supersitter', models.BooleanField(blank=True, null=True)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=7)),
-                ('numReviews', models.IntegerField(blank=True, default=0, null=True)),
+                ('pricing', models.IntegerField(null=True)),
+                ('numReviews', models.IntegerField(default=0)),
                 ('rating', models.DecimalField(decimal_places=2, default=0, max_digits=7)),
+                ('description', models.TextField(blank=True)),
             ],
         ),
         migrations.CreateModel(
@@ -55,6 +56,7 @@ class Migration(migrations.Migration):
                 ('rating', models.DecimalField(decimal_places=2, max_digits=7)),
                 ('pet_owner', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('sitter', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.sitter')),
+
             ],
         ),
         migrations.CreateModel(
@@ -63,6 +65,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100, null=True)),
                 ('pet_owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pets_owned', to=settings.AUTH_USER_MODEL)),
+                ('primary_care_sitter', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='primary_pets', to='api.sitter')),
+
             ],
         ),
         migrations.CreateModel(

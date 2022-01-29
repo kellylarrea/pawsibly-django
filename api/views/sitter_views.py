@@ -43,8 +43,6 @@ class SitterDetail(generics.RetrieveUpdateDestroyAPIView):
         # Only want to show hired sitter?
         # if request.user != sitter.pet_owner:
         #     raise PermissionDenied('Unauthorized, you did not hire this sitter')
-
-        # Run the data through the serializer so it's formatted
         data = SitterSerializer(sitter).data
         return Response({ 'sitter': data })
 

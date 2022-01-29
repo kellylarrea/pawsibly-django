@@ -22,6 +22,17 @@ class Bookings(generics.ListCreateAPIView):
         data = BookingSerializer(bookings, many=True).data
         return Response({ 'bookings': data })
         return Response( status=status.HTTP_400_BAD_REQUEST)
+        # booking_user = request.user
+        # print(request.data)
+        # booking_data = Booking(pet_owner = booking_user)
+        # booking = BookingSerializer(booking_data, data=request.data)
+        # # If the review data is valid according to our serializer...
+        # if booking.is_valid():
+        #     # Save the created review & send a response
+        #     r = booking.save()
+        #     return Response({ 'booking': booking.data }, status=status.HTTP_201_CREATED)
+        # # # If the data is not valid, return a response with the errors
+        # return Response(booking.data, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Create request"""
