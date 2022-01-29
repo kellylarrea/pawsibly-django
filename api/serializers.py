@@ -2,7 +2,6 @@ from pyexpat import model
 from django.db.models import fields, manager
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
-
 from django.contrib.auth import get_user_model
 from .models.pet import Pet
 from .models.booking import Booking
