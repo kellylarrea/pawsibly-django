@@ -8,7 +8,7 @@ from rest_framework import status, generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user, authenticate, login, logout
 from ..models.user import User
-from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer, UserReadSerializer
+from ..serializers import  UserSerializer, UserRegisterSerializer,  ChangePasswordSerializer, UserReadSerializer, UserImageSerializer
 
 
 class Profile(generics.ListCreateAPIView):
@@ -21,6 +21,25 @@ class Profile(generics.ListCreateAPIView):
         data = UserReadSerializer(user_data).data
         return Response({ 'user': data }
         )
+
+
+
+class ProfileImage(generics.ListCreateAPIView):
+    permission_classes=(IsAuthenticated,) 
+    serializer_class = UserImageSerializer
+    def post(self, request):
+        print(request.data)
+
+        user = request.user
+        serializer =UserImageSerializer(user, data=request.data)
+        # pet = PetSerializer(data=request.data)
+        if serializer.is_valid():
+            # Save the created mango & send a response
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # If the data is not valid, return a response with the errors
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=()

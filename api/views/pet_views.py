@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
@@ -22,10 +23,12 @@ class Pets(generics.ListCreateAPIView):
         return Response({ 'pets': data })
 
     def post(self, request):
-        
+        print(request.data)
+
         pet_user = request.user
         pet_data = Pet(pet_owner = pet_user)
         pet = PetSerializer(pet_data, data=request.data)
+        # pet = PetSerializer(data=request.data)
         if pet.is_valid():
             # Save the created mango & send a response
             pet.save()

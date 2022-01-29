@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views.pet_views import Pets, PetDetail
 from .views.sitter_views import Sitters, SitterDetail
-from .views.user_views import SignUp, SignIn, SignOut, ChangePassword,  Profile
+from .views.user_views import SignUp, SignIn, SignOut, ChangePassword,  Profile, ProfileImage
 from .views.booking_views import Bookings, BookingsDetail
 from .views.review_views import Reviews,ReviewsDetail
 
@@ -14,6 +14,7 @@ from .views.review_views import Reviews,ReviewsDetail
 urlpatterns = [
   	# Restful routing
     path('profile',Profile.as_view(), name='users'),
+    path('profileImage',ProfileImage.as_view(), name='users'),
     path('sitters/<int:pk>',SitterDetail.as_view(), name='sitterdetail'),
     path('sitters',Sitters.as_view(), name='users'),
     path('bookings',Bookings.as_view(), name='bookings'),
